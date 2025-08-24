@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 export default function NavLink({ children, href }) {
   const path = usePathname();
 
-  const base = "text-sm px-3 py-1";
+  const base = "text-sm px-3 py-1 text-secondary";
   const active = "font-bold";
   const inactive = "opacity-90 hover:opacity-100";
 
