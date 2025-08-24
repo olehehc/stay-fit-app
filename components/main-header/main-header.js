@@ -1,19 +1,13 @@
-import Link from "next/link";
+import NavLink from "./nav-link";
 
 export default function MainHeader() {
   return (
-    <header className="bg-blue-600 text-white p-4 flex justify-between items-center">
-      <h1 className="text-xl font-bold">FitMeals</h1>
+    <header className="bg-black p-4 flex justify-between items-center">
+      <h1 className="text-white text-xl font-bold">💪 FitMeals</h1>
       <nav className="flex gap-4">
-        <Link href="/" className="hover:underline">
-          Home
-        </Link>
-        <Link href="/auth/sign-in" className="hover:underline">
-          Sign In
-        </Link>
-        <Link href="/auth/sign-up" className="hover:underline">
-          Sign Up
-        </Link>
+        <NavLink href="/">Home</NavLink>
+        <NavLink href="/auth/sign-in">Sign In</NavLink>
+        <NavLink href="/auth/sign-up">Sign Up</NavLink>
       </nav>
     </header>
   );
