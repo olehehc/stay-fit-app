@@ -95,5 +95,5 @@ export default async function signUpAction(prevState, formData) {
     password: hashedPassword,
   });
 
-  redirect("/auth/sign-in");
+  return { ok: true };
 }

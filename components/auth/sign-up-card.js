@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,10 +19,22 @@ import { Label } from "@/components/ui/label";
 import signUpAction from "@/app/auth/sign-up/action";
 
 export default function SignUpCard() {
+  const router = useRouter();
   const [state, formAction, isPending] = useActionState(signUpAction, {
     errors: null,
     data: {},
   });
+
+  useEffect(() => {
+    if (state.ok) {
+      toast("Registration successful! Redirecting...");
+      const timer = setTimeout(() => {
+        router.push("/auth/sign-in");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [state.ok, router]);
 
   return (
     <Card className="w-full max-w-sm">
