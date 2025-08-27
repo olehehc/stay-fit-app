@@ -3,9 +3,13 @@
 import { redirect } from "next/navigation";
 import { compare } from "bcryptjs";
 import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
 
 import { getUserByEmail } from "@/lib/repository/users";
 import { isNotEmpty, isEmail } from "@/lib/validation";
+
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) throw new Error("JWT_SECRET is not defined in .env.local");
 
 export default async function signInAction(prevState, formData) {
   const errors = {};
@@ -56,6 +60,20 @@ export default async function signInAction(prevState, formData) {
       data,
     };
   }
+
+  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
+    expiresIn: "1h",
+  });
+
+  const cookieStore = await cookies();
+
+  cookieStore.set("session_token", token, {
+    httpOnly: true,
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 60 * 60,
+  });
 
   redirect("/");
 }
