@@ -23,8 +23,6 @@ export default function SignInCard() {
     data: {},
   });
 
-  console.log(state);
-
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
