@@ -61,9 +61,11 @@ export default async function signInAction(prevState, formData) {
     };
   }
 
-  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-    expiresIn: "1h",
-  });
+  const token = jwt.sign(
+    { id: user.id, email: user.email, username: user.username },
+    JWT_SECRET,
+    { expiresIn: "1h" }
+  );
 
   const cookieStore = await cookies();
 
