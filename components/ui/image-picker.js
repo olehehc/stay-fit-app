@@ -5,7 +5,7 @@ import { Label } from "./label";
 import { Input } from "./input";
 import { Button } from "./button";
 
-export default function ImagePicker({ label, name }) {
+export default function ImagePicker({ label, name, error }) {
   const [pickedImage, setPickedImage] = useState(null);
   const pickerRef = useRef();
 
@@ -32,10 +32,13 @@ export default function ImagePicker({ label, name }) {
 
   return (
     <div className="flex flex-col gap-2">
-      <Label htmlFor={name}>{label}</Label>
-
+      <Label>{label}</Label>
       <div className="grid grid-cols-2 gap-4">
-        <div className="w-full h-40 border rounded-md flex items-center justify-center overflow-hidden relative">
+        <div
+          className={`w-full h-40 border rounded-md flex items-center justify-center overflow-hidden relative ${
+            error ? "border-destructive" : ""
+          }`}
+        >
           {pickedImage ? (
             <Image
               src={pickedImage}
@@ -62,6 +65,7 @@ export default function ImagePicker({ label, name }) {
           </Button>
         </div>
       </div>
+      {error && <p className="text-xs text-destructive">{error}</p>}
     </div>
   );
 }
