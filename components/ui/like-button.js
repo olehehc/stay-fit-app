@@ -15,7 +15,7 @@ export default function LikeButton() {
   }
 
   return (
-    <button onClick={toggleLiked}>
+    <button title="Favorite" onClick={toggleLiked}>
       <FavoriteIcon
         className={`w-5 h-5 ${isLiked ? "text-red-500" : "text-gray-400"}`}
       />
