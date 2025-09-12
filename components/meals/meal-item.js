@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import LikeButton from "../ui/like-button";
+import FavoriteButton from "../ui/favorite-button";
 
 export default function MealItem({
   title,
@@ -38,7 +38,7 @@ export default function MealItem({
           <p>{creator}</p>
         </CardDescription>
         <CardAction>
-          <LikeButton />
+          <FavoriteButton />
         </CardAction>
       </CardHeader>
       <CardContent className="text-sm">
