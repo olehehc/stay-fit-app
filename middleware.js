@@ -35,5 +35,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/meals/share"],
+  matcher: ["/meals/share", "/trainings/:path*"],
 };
