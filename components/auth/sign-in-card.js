@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import signInAction from "@/app/auth/sign-in/action";
+import LoadingDots from "../ui/loading-dots";
 
 export default function SignInCard() {
   const [state, formAction, isPending] = useActionState(signInAction, {
@@ -78,7 +79,7 @@ export default function SignInCard() {
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Button type="submit" className="w-full" disabled={isPending}>
-                  Login
+                  {isPending ? <LoadingDots /> : "Login"}
                 </Button>
               </div>
             </div>
