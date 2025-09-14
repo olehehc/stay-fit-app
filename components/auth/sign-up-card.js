@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import signUpAction from "@/app/auth/sign-up/action";
-import Spinner from "../ui/spinner";
+import LoadingDots from "../ui/loading-dots";
 
 export default function SignUpCard() {
   const router = useRouter();
@@ -112,7 +112,7 @@ export default function SignUpCard() {
             )}
           </div>
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isPending ? <Spinner /> : "Sign Up"}
+            {isPending ? <LoadingDots /> : "Sign Up"}
           </Button>
         </form>
       </CardContent>
