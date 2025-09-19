@@ -7,16 +7,23 @@ import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import CreateExerciseCard from "@/components/trainings/exercises/create-exercise-card";
 import ExercisesTable from "@/components/trainings/exercises/exercises-table/exercises-table";
-import { ExercisesTableColumns } from "@/components/trainings/exercises/exercises-table/exercises-table-columns";
+import { createExercisesTableColumns } from "@/components/trainings/exercises/exercises-table/exercises-table-columns";
 import TrainingTable from "@/components/trainings/training-table/training-table";
 import DraggableRowPreview from "@/components/trainings/exercises/exercises-table/draggable-row-preview";
 
 export default function CreateTrainingPage() {
   const [isOpen, setIsOpen] = useState(false);
+
   const [exercises, setExercises] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
   const [droppedRows, setDroppedRows] = useState([]);
   const [activeRow, setActiveRow] = useState(null);
+
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editingExercise, setEditingExercise] = useState(null);
+
+  const [reloadExercises, setReloadExercises] = useState(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -33,12 +40,13 @@ export default function CreateTrainingPage() {
         if (err.name !== "AbortError") console.error(err);
       } finally {
         setIsLoading(false);
+        setReloadExercises(false);
       }
     }
 
     loadExercises();
     return () => controller.abort();
-  }, []);
+  }, [reloadExercises]);
 
   function handleClose() {
     setIsOpen(false);
@@ -64,6 +72,30 @@ export default function CreateTrainingPage() {
     setActiveRow(null);
   }
 
+  function handleEditOpen(exercise) {
+    setEditingExercise(exercise);
+    setIsEditOpen(true);
+  }
+
+  async function handleDelete(exercise) {
+    if (!confirm("Delete exercise?")) return;
+    try {
+      const res = await fetch(`/api/exercises/${exercise.id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Delete failed");
+      setExercises((p) => p.filter((e) => e.id !== exercise.id));
+    } catch (err) {
+      console.error(err);
+      alert("Error occurred while deleting. Reload page and try again later.");
+    }
+  }
+
+  const columns = createExercisesTableColumns({
+    onEditOpen: handleEditOpen,
+    onDelete: handleDelete,
+  });
+
   return (
     <DndContext
       onDragStart={handleDragStart}
@@ -74,15 +106,38 @@ export default function CreateTrainingPage() {
         <Button className="mb-6" onClick={() => setIsOpen(true)}>
           Add new exercise
         </Button>
+
         {isOpen && (
           <Modal onClose={handleClose}>
-            <CreateExerciseCard onClose={handleClose} />
+            <CreateExerciseCard
+              onClose={handleClose}
+              onSuccess={() => setReloadExercises(true)}
+            />
           </Modal>
         )}
+
+        {isEditOpen && editingExercise && (
+          <Modal
+            onClose={() => {
+              setIsEditOpen(false);
+              setEditingExercise(null);
+            }}
+          >
+            <CreateExerciseCard
+              onClose={() => {
+                setIsEditOpen(false);
+                setEditingExercise(null);
+              }}
+              onSuccess={() => setReloadExercises(true)}
+              initialData={editingExercise} // прокидываем данные для редактирования
+            />
+          </Modal>
+        )}
+
         <div className="flex flex-row w-full justify-between">
           <ExercisesTable
             data={exercises}
-            columns={ExercisesTableColumns}
+            columns={columns}
             isLoading={isLoading}
           />
           <div id="training-dropzone" className="w-[60%]">
