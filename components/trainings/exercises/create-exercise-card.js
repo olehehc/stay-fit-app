@@ -15,6 +15,7 @@ import {
 } from "@/app/trainings/create-training/actions";
 import ExerciseTypeDropdown from "./exercise-type-dropdown";
 import MuscleGroupDropdown from "./muscle-group-dropdown";
+import LoadingDots from "@/components/ui/loading-dots";
 
 export default function CreateExerciseCard({
   onClose,
@@ -42,6 +43,8 @@ export default function CreateExerciseCard({
       if (onSuccess) onSuccess();
     }
   }, [state.ok, onClose, onSuccess, isEditMode]);
+
+  const buttonText = isEditMode ? "Update Exercise" : "Create Exercise";
 
   return (
     <Card className="w-full max-w-lg">
@@ -129,7 +132,7 @@ export default function CreateExerciseCard({
           />
 
           <Button type="submit" className="w-full" disabled={isPending}>
-            {isEditMode ? "Update Exercise" : "Create Exercise"}
+            {isPending ? <LoadingDots /> : buttonText}
           </Button>
         </form>
       </CardContent>
