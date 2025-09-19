@@ -10,6 +10,7 @@ import ExercisesTable from "@/components/trainings/exercises/exercises-table/exe
 import { createExercisesTableColumns } from "@/components/trainings/exercises/exercises-table/exercises-table-columns";
 import TrainingTable from "@/components/trainings/training-table/training-table";
 import DraggableRowPreview from "@/components/trainings/exercises/exercises-table/draggable-row-preview";
+import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog";
 
 export default function CreateTrainingPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +20,9 @@ export default function CreateTrainingPage() {
 
   const [droppedRows, setDroppedRows] = useState([]);
   const [activeRow, setActiveRow] = useState(null);
+
+  const [exerciseToDelete, setExerciseToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editingExercise, setEditingExercise] = useState(null);
@@ -77,23 +81,29 @@ export default function CreateTrainingPage() {
     setIsEditOpen(true);
   }
 
-  async function handleDelete(exercise) {
-    if (!confirm("Delete exercise?")) return;
+  async function handleDeleteConfirmed() {
+    if (!exerciseToDelete) return;
+    setIsDeleting(true);
+
     try {
-      const res = await fetch(`/api/exercises/${exercise.id}`, {
+      const res = await fetch(`/api/exercises/${exerciseToDelete.id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Delete failed");
-      setExercises((p) => p.filter((e) => e.id !== exercise.id));
+
+      setExercises((p) => p.filter((e) => e.id !== exerciseToDelete.id));
     } catch (err) {
       console.error(err);
       alert("Error occurred while deleting. Reload page and try again later.");
+    } finally {
+      setExerciseToDelete(null);
+      setIsDeleting(false);
     }
   }
 
   const columns = createExercisesTableColumns({
     onEditOpen: handleEditOpen,
-    onDelete: handleDelete,
+    onDelete: (exercise) => setExerciseToDelete(exercise),
   });
 
   return (
@@ -133,6 +143,16 @@ export default function CreateTrainingPage() {
             />
           </Modal>
         )}
+
+        <DeleteConfirmDialog
+          title="Delete exercise?"
+          description="This action cannot be undone. This will permanently delete the
+            exercise."
+          open={!!exerciseToDelete}
+          onOpenChange={(open) => !open && setExerciseToDelete(null)}
+          onConfirm={handleDeleteConfirmed}
+          isPending={isDeleting}
+        />
 
         <div className="flex flex-row w-full justify-between">
           <ExercisesTable
