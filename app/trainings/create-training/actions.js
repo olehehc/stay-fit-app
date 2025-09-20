@@ -29,9 +29,6 @@ export async function createExerciseAction(prevState, formData) {
     image: formData.get("image"),
   };
 
-  console.log(formData.get("exerciseType"));
-  console.log(formData.get("muscleGroup"));
-
   if (!isNotEmpty(data.title)) {
     errors.title = "This field is required";
   } else if (!hasMinLength(data.title, 4)) {
@@ -77,7 +74,7 @@ export async function createExerciseAction(prevState, formData) {
   return { ok: true };
 }
 
-export async function updateExerciseAction(prevState, formData) {
+export async function updateExerciseAction(prevState, formData, initialData) {
   const user = await getCurrentUser();
   const errors = {};
 
@@ -114,13 +111,17 @@ export async function updateExerciseAction(prevState, formData) {
     errors.instructions = "Instructions must be at least 20 characters";
   }
 
-  const MAX_FILE_SIZE = 10 * 1024 * 1024;
-  if (!isProvided(data.image)) {
-    errors.image = "Image is required";
-  } else if (!isAtLeastSize(data.image.size, 1)) {
-    errors.image = "Image file is empty";
-  } else if (!isUnderSizeLimit(data.image.size, MAX_FILE_SIZE)) {
-    errors.image = "Image exceeds maximum size of 10MB";
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+  const imageChanged = formData.get("imageChanged") === "1";
+
+  if (imageChanged) {
+    if (!isProvided(data.image)) {
+      errors.image = "Image is required";
+    } else if (!isAtLeastSize(data.image.size, 1)) {
+      errors.image = "Image file is empty";
+    } else if (!isUnderSizeLimit(data.image.size, MAX_FILE_SIZE)) {
+      errors.image = "Image exceeds maximum size of 10MB";
+    }
   }
 
   if (Object.keys(errors).length > 0) {
@@ -131,7 +132,13 @@ export async function updateExerciseAction(prevState, formData) {
     };
   }
 
-  const updated = await updateExerciseByCreator(id, user.email, data);
+  const payload = {
+    ...data,
+    imageToDelete: imageChanged ? initialData.image : undefined,
+    image: imageChanged ? data.image : undefined,
+  };
+
+  const updated = await updateExerciseByCreator(id, user.email, payload);
   if (!updated) {
     return {
       ok: false,
