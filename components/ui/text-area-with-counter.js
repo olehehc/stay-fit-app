@@ -7,8 +7,11 @@ export default function TextAreaWithCounter({
   state,
   maxChars,
   maxVH,
+  defaultValue = "",
 }) {
-  const [value, setValue] = useState(state.data?.instructions || "");
+  const [value, setValue] = useState(
+    state.data?.instructions || defaultValue || ""
+  );
 
   const maxHeightClass =
     {
