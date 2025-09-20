@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -22,10 +22,15 @@ export default function CreateExerciseCard({
   initialData,
   onSuccess,
 }) {
+  const [imageChanged, setImageChanged] = useState(false);
+
   const isEditMode = Boolean(initialData);
 
   const [state, formAction, isPending] = useActionState(
-    isEditMode ? updateExerciseAction : createExerciseAction,
+    isEditMode
+      ? (prevState, formData) =>
+          updateExerciseAction(prevState, formData, initialData)
+      : createExerciseAction,
     {
       errors: null,
       data: {},
@@ -56,7 +61,14 @@ export default function CreateExerciseCard({
       <CardContent>
         <form className="flex flex-col gap-6" noValidate action={formAction}>
           {isEditMode && (
-            <input type="hidden" name="id" value={initialData.id} />
+            <>
+              <input type="hidden" name="id" value={initialData.id} />
+              <input
+                type="hidden"
+                name="imageChanged"
+                value={imageChanged ? "1" : "0"}
+              />
+            </>
           )}
 
           <div className="grid gap-2">
@@ -79,7 +91,7 @@ export default function CreateExerciseCard({
               <ExerciseTypeDropdown
                 name="exerciseType"
                 defaultValue={
-                  initialData?.exerciseType || state.data?.exerciseType
+                  initialData?.exercise_type || state.data?.exerciseType
                 }
                 className={state.errors?.exerciseType && "border-destructive"}
               />
@@ -94,7 +106,7 @@ export default function CreateExerciseCard({
               <MuscleGroupDropdown
                 name="muscleGroup"
                 defaultValue={
-                  initialData?.muscleGroup || state.data?.muscleGroup
+                  initialData?.muscle_group || state.data?.muscleGroup
                 }
                 className={state.errors?.muscleGroup && "border-destructive"}
               />
@@ -129,6 +141,10 @@ export default function CreateExerciseCard({
             name="image"
             error={state.errors?.image}
             defaultValue={initialData?.image}
+            onChange={(file) => {
+              if (!isEditMode) return;
+              if (file) setImageChanged(true);
+            }}
           />
 
           <Button type="submit" className="w-full" disabled={isPending}>
