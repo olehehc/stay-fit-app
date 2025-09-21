@@ -78,8 +78,8 @@ export async function updateExerciseAction(prevState, formData, initialData) {
   const user = await getCurrentUser();
   const errors = {};
 
-  const id = formData.get("id");
   const data = {
+    id: formData.get("id"),
     creator: user.username,
     creator_email: user.email,
     title: formData.get("title"),
@@ -138,7 +138,7 @@ export async function updateExerciseAction(prevState, formData, initialData) {
     image: imageChanged ? data.image : undefined,
   };
 
-  const updated = await updateExerciseByCreator(id, user.email, payload);
+  const updated = await updateExerciseByCreator(data.id, user.email, payload);
   if (!updated) {
     return {
       ok: false,
@@ -147,5 +147,5 @@ export async function updateExerciseAction(prevState, formData, initialData) {
     };
   }
 
-  return { ok: true };
+  return { ok: true, data: updated };
 }
