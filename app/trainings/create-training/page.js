@@ -68,6 +68,7 @@ export default function CreateTrainingPage() {
       const exercise = exercises.find((e) => e.id.toString() === active.id);
       if (exercise && !droppedRows.some((r) => r.id === exercise.id)) {
         setDroppedRows((prev) => [...prev, exercise]);
+        console.log(droppedRows);
       }
     }
   }
@@ -121,7 +122,9 @@ export default function CreateTrainingPage() {
           <Modal onClose={handleClose}>
             <CreateExerciseCard
               onClose={handleClose}
-              onSuccess={() => setReloadExercises(true)}
+              onSuccess={() => {
+                setReloadExercises(true);
+              }}
             />
           </Modal>
         )}
@@ -138,8 +141,17 @@ export default function CreateTrainingPage() {
                 setIsEditOpen(false);
                 setEditingExercise(null);
               }}
-              onSuccess={() => setReloadExercises(true)}
-              initialData={editingExercise} // прокидываем данные для редактирования
+              onSuccess={(updatedExercise) => {
+                setReloadExercises(true);
+                setDroppedRows((prev) =>
+                  prev.map((row) =>
+                    row.id === updatedExercise.id
+                      ? { ...row, ...updatedExercise }
+                      : row
+                  )
+                );
+              }}
+              initialData={editingExercise}
             />
           </Modal>
         )}
