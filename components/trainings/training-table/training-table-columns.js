@@ -1,6 +1,9 @@
+import DeleteIcon from "@mui/icons-material/Delete";
+
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export default function getTrainingTableColumns(setRows) {
+export default function getTrainingTableColumns(setRows, onDelete) {
   return [
     { accessorKey: "title", header: "Title" },
     { accessorKey: "muscle_group", header: "Muscle Group" },
@@ -11,7 +14,7 @@ export default function getTrainingTableColumns(setRows) {
       cell: ({ row }) => (
         <Input
           type="number"
-          className="h-8 w-16 border rounded px-2"
+          className="h-8 w-16"
           value={row.original.sets || ""}
           onChange={(e) => {
             const newValue = e.target.value;
@@ -30,7 +33,7 @@ export default function getTrainingTableColumns(setRows) {
       cell: ({ row }) => (
         <Input
           type="number"
-          className="h-8 w-16 border rounded px-2"
+          className="h-8 w-16"
           value={row.original.reps || ""}
           onChange={(e) => {
             const newValue = e.target.value;
@@ -41,6 +44,19 @@ export default function getTrainingTableColumns(setRows) {
             );
           }}
         />
+      ),
+    },
+    {
+      accessorKey: "delete",
+      header: "",
+      cell: ({ row }) => (
+        <Button
+          title="Delete"
+          className="h-8 w-16"
+          onClick={() => onDelete(row.original.id)}
+        >
+          <DeleteIcon />
+        </Button>
       ),
     },
   ];
