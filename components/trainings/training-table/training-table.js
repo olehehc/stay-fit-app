@@ -1,4 +1,3 @@
-// training-table.js
 import React from "react";
 import {
   useReactTable,
@@ -17,14 +16,18 @@ import { useDroppable } from "@dnd-kit/core";
 import TrainingTableRow from "./training-table-row";
 import getTrainingTableColumns from "./training-table-columns";
 
-export default function TrainingTable({ droppedRows = [], setDroppedRows }) {
+export default function TrainingTable({
+  droppedRows = [],
+  setDroppedRows,
+  onDelete,
+}) {
   const { setNodeRef, isOver } = useDroppable({
     id: "training-dropzone",
   });
 
   const rows = droppedRows;
 
-  const columns = getTrainingTableColumns(setRowsWrapper);
+  const columns = getTrainingTableColumns(setRowsWrapper, onDelete);
 
   function setRowsWrapper(updater) {
     if (typeof updater === "function") {
