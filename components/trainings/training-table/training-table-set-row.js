@@ -5,7 +5,7 @@ export default function SetRow({ exerciseId, setIndex, setData, updateSet }) {
   const { reps, rest_period } = setData;
 
   return (
-    <TableRow key={`${exerciseId}-set-${setIndex}`} className={"bg-gray-100"}>
+    <TableRow key={`${exerciseId}-set-${setIndex}`}>
       <TableCell>Set {setIndex + 1}</TableCell>
       <TableCell></TableCell>
       <TableCell></TableCell>
