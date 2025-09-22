@@ -21,7 +21,7 @@ export default function getTrainingTableColumns(setRows, onDelete) {
           setRows((prev) =>
             prev.map((r) =>
               r.id === row.original.id
-                ? { ...r, sets: [...r.sets, { reps: 0, rest_period: 1 }] }
+                ? { ...r, sets: [...r.sets, { reps: 10, rest_period: 1 }] }
                 : r
             )
           );
@@ -50,9 +50,7 @@ export default function getTrainingTableColumns(setRows, onDelete) {
             >
               <RemoveIcon fontSize="small" />
             </Button>
-
             <span className="px-3 min-w-[2rem] text-center">{setsCount}</span>
-
             <Button variant="ghost" size="icon" onClick={addSet}>
               <AddIcon fontSize="small" />
             </Button>
@@ -63,12 +61,28 @@ export default function getTrainingTableColumns(setRows, onDelete) {
     {
       accessorKey: "reps",
       header: "Reps",
-      cell: ({ row }) => <p>min-max</p>,
+      cell: ({ row }) => {
+        const sets = row.original.sets || [];
+        if (sets.length === 0) return null;
+
+        const repsValues = sets.map((set) => set.reps);
+        const sum = repsValues.reduce((acc, val) => acc + val, 0);
+
+        return <span>{sum}</span>;
+      },
     },
     {
       accessorKey: "rest_period",
       header: "Rest",
-      cell: ({ row }) => <p>min-max</p>,
+      cell: ({ row }) => {
+        const sets = row.original.sets || [];
+        if (sets.length === 0) return null;
+
+        const restPeriodValues = sets.map((set) => set.rest_period);
+        const sum = restPeriodValues.reduce((acc, val) => acc + val, 0);
+
+        return <span>{sum} min</span>;
+      },
     },
     {
       accessorKey: "delete",
