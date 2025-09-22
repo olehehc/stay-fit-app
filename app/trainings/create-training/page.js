@@ -104,7 +104,10 @@ export default function CreateTrainingPage() {
     if (over && over.id === "training-dropzone") {
       const exercise = exercises.find((e) => e.id.toString() === active.id);
       if (exercise && !droppedRows.some((r) => r.id === exercise.id)) {
-        setDroppedRows((prev) => [...prev, exercise]);
+        setDroppedRows((prev) => [
+          ...prev,
+          { ...exercise, sets: [{ reps: 10, rest_period: 1 }] },
+        ]);
         console.log(droppedRows);
       }
     }
