@@ -134,7 +134,10 @@ export default function CreateTrainingPage() {
       });
       if (!res.ok) throw new Error("Delete failed");
 
-      setExercises((p) => p.filter((e) => e.id !== exerciseToDelete.id));
+      setExercises((prev) => prev.filter((e) => e.id !== exerciseToDelete.id));
+      setDroppedRows((prev) =>
+        prev.filter((e) => e.id !== exerciseToDelete.id)
+      );
     } catch (err) {
       console.error(err);
       alert("Error occurred while deleting. Reload page and try again later.");
