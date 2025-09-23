@@ -16,13 +16,13 @@ export default function MuscleGroupDropdown({ name, defaultValue }) {
   const [value, setValue] = useState(defaultValue ?? "");
 
   const muscleGroups = [
-    { value: "chest", label: "Chest" },
-    { value: "back", label: "Back" },
-    { value: "shoulders", label: "Shoulders" },
-    { value: "biceps", label: "Biceps" },
-    { value: "triceps", label: "Triceps" },
-    { value: "legs", label: "Legs" },
-    { value: "abs", label: "Abs" },
+    { value: "Chest", label: "Chest" },
+    { value: "Back", label: "Back" },
+    { value: "Shoulders", label: "Shoulders" },
+    { value: "Biceps", label: "Biceps" },
+    { value: "Triceps", label: "Triceps" },
+    { value: "Legs", label: "Legs" },
+    { value: "Abs", label: "Abs" },
   ];
 
   const sortedMuscleGroups = [...muscleGroups].sort((a, b) =>
