@@ -163,9 +163,30 @@ export default function CreateTrainingPage() {
       onDragCancel={handleDragCancel}
     >
       <main className="flex-1 pt-[92px] p-6 bg-gray-50">
-        <Button className="mb-6" onClick={() => setIsOpen(true)}>
-          Add new exercise
-        </Button>
+        <div className="flex w-full gap-6">
+          <div className="w-[30%] min-w-0">
+            <div className="mb-6">
+              <Button onClick={() => setIsOpen(true)}>Add new exercise</Button>
+            </div>
+            <ExercisesTable
+              data={exercises}
+              columns={exercisesTableColumns}
+              isLoading={isLoading}
+            />
+          </div>
+          <div className="w-[60%] ml-auto min-w-0">
+            <div className="mb-6">
+              <Button>Save training</Button>
+            </div>
+            <div id="training-dropzone" className="w-full">
+              <TrainingTable
+                droppedRows={droppedRows}
+                setDroppedRows={setDroppedRows}
+                onDelete={deleteTrainingTableRowHandler}
+              />
+            </div>
+          </div>
+        </div>
 
         {isOpen && (
           <Modal onClose={handleClose}>
@@ -214,21 +235,6 @@ export default function CreateTrainingPage() {
           onConfirm={handleDeleteConfirmed}
           isPending={isDeleting}
         />
-
-        <div className="flex flex-row w-full justify-between">
-          <ExercisesTable
-            data={exercises}
-            columns={exercisesTableColumns}
-            isLoading={isLoading}
-          />
-          <div id="training-dropzone" className="w-[60%]">
-            <TrainingTable
-              droppedRows={droppedRows}
-              setDroppedRows={setDroppedRows}
-              onDelete={deleteTrainingTableRowHandler}
-            />
-          </div>
-        </div>
 
         <DragOverlay dropAnimation={null}>
           {activeRow ? (
