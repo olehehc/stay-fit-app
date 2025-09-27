@@ -10,7 +10,6 @@ import {
   TableBody,
   TableRow,
   TableHead,
-  TableCell,
 } from "@/components/ui/table";
 import { useDroppable } from "@dnd-kit/core";
 import AddIcon from "@mui/icons-material/Add";
@@ -20,15 +19,13 @@ import SetRow from "./training-table-set-row";
 import getTrainingTableColumns from "./training-table-columns";
 
 export default function TrainingTable({
-  droppedRows = [],
+  droppedRows: rows = [],
   setDroppedRows,
   onDelete,
 }) {
   const { setNodeRef, isOver } = useDroppable({
     id: "training-dropzone",
   });
-
-  const rows = droppedRows;
 
   const columns = getTrainingTableColumns(setRowsWrapper, onDelete);
 
@@ -93,7 +90,7 @@ export default function TrainingTable({
             isOver ? "bg-blue-50" : "bg-white"
           }`}
         >
-          {droppedRows.length > 0 ? (
+          {rows.length > 0 ? (
             <Table className="min-w-full table-fixed">
               <TableBody>
                 {table.getRowModel().rows.map((row) => (
