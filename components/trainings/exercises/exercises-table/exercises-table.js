@@ -26,7 +26,7 @@ export default function ExercisesTable({ columns, data, isLoading = false }) {
     table.getHeaderGroups()[0]?.headers.length ?? columns.length;
 
   return (
-    <div className="bg-white w-[30%] h-[70vh] rounded-md border shadow-md">
+    <div className="bg-white w-full h-[70vh] rounded-md border shadow-md">
       <div className="h-full flex flex-col">
         <Table className="min-w-full table-fixed rounded-t-md overflow-hidden">
           <TableHeader>
