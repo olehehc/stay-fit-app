@@ -21,7 +21,10 @@ export default function getTrainingTableColumns(setRows, onDelete) {
           setRows((prev) =>
             prev.map((r) =>
               r.id === row.original.id
-                ? { ...r, sets: [...r.sets, { reps: 10, rest_period: 1 }] }
+                ? {
+                    ...r,
+                    sets: [...r.sets, { reps: 10, weight: 0, rest_period: 1 }],
+                  }
                 : r
             )
           );
@@ -41,7 +44,7 @@ export default function getTrainingTableColumns(setRows, onDelete) {
         }
 
         return (
-          <div className="flex items-center border rounded-md overflow-hidden w-fit shadow-xs">
+          <div className="flex items-center border rounded-md overflow-hidden w-fit h-8 shadow-xs">
             <Button
               variant="ghost"
               size="icon"
@@ -69,6 +72,20 @@ export default function getTrainingTableColumns(setRows, onDelete) {
         const sum = repsValues.reduce((acc, val) => acc + val, 0);
 
         return <span>{sum}</span>;
+      },
+    },
+    {
+      accessorKey: "weight",
+      header: "Weight",
+      cell: ({ row }) => {
+        const sets = row.original.sets || [];
+        if (sets.length === 0) return null;
+
+        const volume = sets.reduce(
+          (acc, set) => acc + set.reps * set.weight,
+          0
+        );
+        return <span>{volume} kg</span>;
       },
     },
     {
