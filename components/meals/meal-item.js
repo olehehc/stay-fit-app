@@ -15,7 +15,7 @@ export default function MealItem({
   title,
   slug,
   image,
-  creator,
+  username,
   calories,
   protein,
 }) {
@@ -35,7 +35,7 @@ export default function MealItem({
           <Link href={`/meals/${slug}`}>{title}</Link>
         </CardTitle>
         <CardDescription>
-          <p>{creator}</p>
+          <p>{username}</p>
         </CardDescription>
         <CardAction>
           <FavoriteButton />
