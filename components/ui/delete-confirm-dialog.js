@@ -11,6 +11,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import LoadingDots from "./loading-dots";
+import { Button } from "./button";
 
 export default function DeleteConfirmDialog({
   title,
@@ -29,9 +30,9 @@ export default function DeleteConfirmDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
-          <AlertDialogAction disabled={isPending} onClick={onConfirm}>
+          <Button disabled={isPending} onClick={onConfirm}>
             {isPending ? <LoadingDots /> : "Delete"}
-          </AlertDialogAction>
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
