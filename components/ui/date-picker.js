@@ -15,34 +15,65 @@ import {
 export default function DatePicker({ label, id, name, error }) {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(undefined);
+  const labelId = `${id}-label`;
 
   return (
     <div className="flex flex-col gap-3">
-      <Label htmlFor={id}>{label}</Label>
+      <Label
+        id={labelId}
+        role="button"
+        tabIndex={0}
+        onClick={() => setOpen(true)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setOpen(true);
+          }
+        }}
+      >
+        {label}
+      </Label>
+
       <input
         type="hidden"
-        id={id}
+        id={`${id}-hidden`}
         name={name}
-        value={date ? date.toISOString().split("T")[0] : ""}
+        value={
+          date
+            ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+                2,
+                "0"
+              )}-${String(date.getDate()).padStart(2, "0")}`
+            : ""
+        }
       />
+
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             id={id}
+            aria-labelledby={labelId}
+            aria-expanded={open}
             className={`w-48 justify-between font-normal ${error ? error : ""}`}
           >
-            {date ? date.toLocaleDateString() : "Select date"}
+            {date
+              ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+                  2,
+                  "0"
+                )}-${String(date.getDate()).padStart(2, "0")}`
+              : "Select date"}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
+
         <PopoverContent className="w-auto overflow-hidden p-0" align="start">
           <Calendar
             mode="single"
             selected={date}
             captionLayout="dropdown"
-            onSelect={(date) => {
-              setDate(date);
+            onSelect={(d) => {
+              setDate(d);
               setOpen(false);
             }}
           />
