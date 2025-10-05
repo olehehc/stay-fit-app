@@ -11,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { formatDateToYMD } from "@/lib/utils";
 
 export default function DatePicker({ label, id, name, error }) {
   const [open, setOpen] = useState(false);
@@ -38,14 +39,7 @@ export default function DatePicker({ label, id, name, error }) {
         type="hidden"
         id={`${id}-hidden`}
         name={name}
-        value={
-          date
-            ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-                2,
-                "0"
-              )}-${String(date.getDate()).padStart(2, "0")}`
-            : ""
-        }
+        value={date ? formatDateToYMD(date) : ""}
       />
 
       <Popover open={open} onOpenChange={setOpen}>
@@ -57,12 +51,7 @@ export default function DatePicker({ label, id, name, error }) {
             aria-expanded={open}
             className={`w-48 justify-between font-normal ${error ? error : ""}`}
           >
-            {date
-              ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-                  2,
-                  "0"
-                )}-${String(date.getDate()).padStart(2, "0")}`
-              : "Select date"}
+            {date ? formatDateToYMD(date) : "Select date"}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
