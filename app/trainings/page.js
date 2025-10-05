@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
 import TrainingsList from "@/components/trainings/trainings-list";
 import { CalendarWithRangeSelection } from "@/components/ui/calendar-with-range-selection";
 import { Button } from "@/components/ui/button";
 import { SwitchWithLabel } from "@/components/ui/switch-with-label";
-import Link from "next/link";
 import LoadingDots from "@/components/ui/loading-dots";
 import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog";
+import { formatDateToYMD } from "@/lib/utils";
 
 export default function TrainingsPage() {
   const [trainings, setTrainings] = useState([]);
@@ -18,14 +18,40 @@ export default function TrainingsPage() {
   const [trainingIdToDelete, setTrainingIdToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const today = new Date();
+  const nextWeek = new Date();
+  nextWeek.setDate(today.getDate() + 6);
+
+  const [dateRange, setDateRange] = useState(() => {
+    return {
+      from: today,
+      to: nextWeek,
+    };
+  });
+
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
 
+    const from = dateRange?.from ?? null;
+    const to = dateRange?.to ?? null;
+
     async function loadTrainings() {
       setIsLoading(true);
       try {
-        const res = await fetch("/api/trainings", { signal });
+        const params = new URLSearchParams();
+        if (from) {
+          const dateFrom = formatDateToYMD(dateRange.from);
+          params.append("dateFrom", dateFrom);
+        }
+        if (to) {
+          const dateTo = formatDateToYMD(dateRange.to);
+          params.append("dateTo", dateTo);
+        }
+
+        const res = await fetch(`/api/trainings?${params.toString()}`, {
+          signal,
+        });
         if (!res.ok) throw new Error("Fetch failed");
         const data = await res.json();
         setTrainings(data);
@@ -38,7 +64,7 @@ export default function TrainingsPage() {
 
     loadTrainings();
     return () => controller.abort();
-  }, []);
+  }, [dateRange]);
 
   function onDelete(trainingId) {
     setTrainingIdToDelete(trainingId);
@@ -100,10 +126,20 @@ export default function TrainingsPage() {
         </div>
 
         <div className="flex flex-col gap-4 items-start min-h-0">
-          <SwitchWithLabel>Next 7 days</SwitchWithLabel>
+          <SwitchWithLabel
+            dateRange={dateRange}
+            setDateRange={setDateRange}
+            today={today}
+            nextWeek={nextWeek}
+          >
+            Next 7 days
+          </SwitchWithLabel>
 
           <div className="flex-1 min-h-0 max-h-[calc(100vh-92px-1.5rem)] overflow-hidden">
-            <CalendarWithRangeSelection />
+            <CalendarWithRangeSelection
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+            />
           </div>
         </div>
       </div>
