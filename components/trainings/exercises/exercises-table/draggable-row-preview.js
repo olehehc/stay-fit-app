@@ -20,6 +20,7 @@ export default function DraggableRowPreview({
             {row.getVisibleCells().map((cell, idx) => (
               <TableCell
                 key={cell.id}
+                className="whitespace-normal break-words"
                 style={
                   cellWidths && typeof cellWidths[idx] === "number"
                     ? { width: `${cellWidths[idx]}px` }
