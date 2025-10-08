@@ -8,12 +8,20 @@ export async function updateTrainingAction(trainingData, prevState, formData) {
   const user = await getCurrentUser();
   const errors = {};
 
-  console.log(JSON.stringify(trainingData));
+  const formattedTraining = trainingData.training.map((exercise) => ({
+    ...exercise,
+    sets: exercise.sets.map((set) => ({
+      ...set,
+      reps: Number(set.reps),
+      rest_period: Number(set.rest_period),
+      weight: Number(set.weight),
+    })),
+  }));
 
   const data = {
     title: formData.get("title"),
     training_date: formData.get("date"),
-    training: [...trainingData.training],
+    training: [...formattedTraining],
   };
 
   if (!isNotEmpty(data.title)) {

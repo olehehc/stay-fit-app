@@ -151,13 +151,21 @@ export async function saveTrainingAction(trainingData, prevState, formData) {
   const user = await getCurrentUser();
   const errors = {};
 
+  const formattedTrainingData = trainingData.map((exercise) => ({
+    ...exercise,
+    sets: exercise.sets.map((set) => ({
+      ...set,
+      reps: Number(set.reps),
+      rest_period: Number(set.rest_period),
+      weight: Number(set.weight),
+    })),
+  }));
+
   const data = {
     title: formData.get("title"),
     training_date: formData.get("date"),
-    training: [...trainingData],
+    training: [...formattedTrainingData],
   };
-
-  console.log("save training action: ", data.training_date);
 
   if (!isNotEmpty(data.title)) {
     errors.title = "This field is required";
