@@ -18,6 +18,10 @@ export default function TrainingItem({
     router.push(`/trainings/${trainingSlug}/edit?trainingId=${trainingId}`);
   }
 
+  function handleSession() {
+    router.push(`trainings/${trainingSlug}/session?trainingId=${trainingId}`);
+  }
+
   return (
     <div className="bg-white w-full rounded-md border shadow-sm p-4 flex flex-row items-center justify-between w-xl">
       <div>
@@ -25,7 +29,11 @@ export default function TrainingItem({
         <p className="text-sm text-gray-500">📅 {trainingDate}</p>
       </div>
       <div className="flex gap-2">
-        <Button title="Start training" variant="outline">
+        <Button
+          title="Start training"
+          variant="outline"
+          onClick={handleSession}
+        >
           <PlayArrowIcon />
         </Button>
         <Button title="Edit training" variant="outline" onClick={handleEdit}>
