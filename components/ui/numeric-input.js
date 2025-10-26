@@ -13,21 +13,9 @@ function NumericInput({
 }) {
   const valueStr = value == null ? "" : String(value);
 
-  React.useEffect(() => {
-    console.log("[Input] prop value changed", { value: valueStr });
-  }, [valueStr]);
-
   const handleKeyDown = (e) => {
-    console.log("[Input] onKeyDown", {
-      key: e.key,
-      value: valueStr,
-      selectionStart: e.target?.selectionStart,
-      selectionEnd: e.target?.selectionEnd,
-    });
-
     if (type === "number" && /^[0-9]$/.test(e.key) && valueStr === "0") {
       e.preventDefault();
-      console.log("[Input] replace 0 with", e.key);
       if (onChange) onChange({ target: { value: e.key } });
       return;
     }
@@ -36,18 +24,15 @@ function NumericInput({
   };
 
   const handleChange = (e) => {
-    console.log("[Input] onChange raw", { raw: e.target.value });
     if (onChange) onChange(e);
   };
 
   const handleFocus = (e) => {
-    console.log("[Input] onFocus", { value: valueStr });
     if (e.target.value === "0") e.target.select();
     if (onFocus) onFocus(e);
   };
 
   const handleBlur = (e) => {
-    console.log("[Input] onBlur", { value: e.target.value });
     if (onBlur) onBlur(e);
   };
 
