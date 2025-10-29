@@ -34,7 +34,7 @@ export default function ExerciseChart({
   const yAxisMax = getMaxValueFromKeys(chartData) * 1.1;
 
   return (
-    <div style={styles.card} className="w-full">
+    <div style={styles.card} className="w-full bg-white">
       <div style={styles.cardHeader}>
         <h2 style={styles.cardTitle}>{title}</h2>
         <p style={styles.cardDescription}>{description}</p>
