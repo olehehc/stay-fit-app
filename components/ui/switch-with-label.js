@@ -9,8 +9,8 @@ export function SwitchWithLabel({
   today,
   nextWeek,
 }) {
-  const from = dateRange?.from ?? null;
-  const to = dateRange?.to ?? null;
+  const from = dateRange?.from ? new Date(dateRange.from) : null;
+  const to = dateRange?.to ? new Date(dateRange.to) : null;
 
   const isChecked =
     from &&
