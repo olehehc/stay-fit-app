@@ -1,5 +1,6 @@
-import { useRouter } from "next/navigation";
+"use client";
 
+import { useRouter } from "next/navigation";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
