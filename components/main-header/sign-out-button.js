@@ -3,11 +3,10 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-import { Button } from "../ui/button";
 import { signOut } from "@/lib/auth";
 import LoadingDots from "../ui/loading-dots";
 
-export default function SignOutButton() {
+export default function SignOutButton({ className }) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -20,13 +19,12 @@ export default function SignOutButton() {
   }
 
   return (
-    <Button
+    <button
       onClick={handleLogout}
       disabled={isPending}
-      variant="link"
-      className="text-sm px-3 py-1 text-secondary opacity-90 hover:opacity-100 cursor-pointer"
+      className={`${className} cursor-pointer`}
     >
       {isPending ? <LoadingDots /> : "Sign Out"}
-    </Button>
+    </button>
   );
 }
