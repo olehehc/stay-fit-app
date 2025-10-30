@@ -18,7 +18,7 @@ export default async function TrainingsPage({ searchParams: rawSearchParams }) {
 
   const user = await getCurrentUser();
 
-  const trainings = getTrainingsByUserAndDateRange(
+  const trainings = await getTrainingsByUserAndDateRange(
     user.id,
     formatDateToYMD(from),
     formatDateToYMD(to)
