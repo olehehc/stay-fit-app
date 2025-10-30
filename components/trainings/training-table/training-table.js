@@ -10,6 +10,7 @@ import {
   TableBody,
   TableRow,
   TableHead,
+  TableCell,
 } from "@/components/ui/table";
 import { useDroppable } from "@dnd-kit/core";
 import AddIcon from "@mui/icons-material/Add";
@@ -17,11 +18,13 @@ import AddIcon from "@mui/icons-material/Add";
 import TrainingTableRow from "./training-table-row";
 import SetRow from "./training-table-set-row";
 import getTrainingTableColumns from "./training-table-columns";
+import LoadingDots from "@/components/ui/loading-dots";
 
 export default function TrainingTable({
   droppedRows: rows = [],
   setDroppedRows,
   onDelete,
+  loading = false,
 }) {
   const { setNodeRef, isOver } = useDroppable({
     id: "training-dropzone",
@@ -90,27 +93,7 @@ export default function TrainingTable({
             isOver ? "bg-blue-50" : "bg-white"
           }`}
         >
-          {rows.length > 0 ? (
-            <Table className="min-w-full table-fixed">
-              <TableBody>
-                {table.getRowModel().rows.map((row) => (
-                  <React.Fragment key={row.id}>
-                    <TrainingTableRow row={row} />
-                    {row.original.sets.map((setData, index) => (
-                      <SetRow
-                        className={`${isOver ? "bg-blue-50" : "bg-gray-100"}`}
-                        key={`${row.id}-set-${index}`}
-                        exerciseId={row.original.id}
-                        setIndex={index}
-                        setData={setData}
-                        updateSet={updateSet}
-                      />
-                    ))}
-                  </React.Fragment>
-                ))}
-              </TableBody>
-            </Table>
-          ) : (
+          {rows.length === 0 && !loading ? (
             <div className="h-full w-full flex flex-col items-center justify-center p-6">
               <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white/50">
                 <AddIcon />
@@ -119,6 +102,34 @@ export default function TrainingTable({
                 Drag an exercise here
               </div>
             </div>
+          ) : (
+            <Table className="min-w-full table-fixed">
+              <TableBody>
+                {loading ? (
+                  <TableRow className="h-full">
+                    <TableCell className="text-center py-6">
+                      <LoadingDots className="justify-center" />
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  table.getRowModel().rows.map((row) => (
+                    <React.Fragment key={row.id}>
+                      <TrainingTableRow row={row} />
+                      {row.original.sets.map((setData, index) => (
+                        <SetRow
+                          className={`${isOver ? "bg-blue-50" : "bg-gray-100"}`}
+                          key={`${row.id}-set-${index}`}
+                          exerciseId={row.original.id}
+                          setIndex={index}
+                          setData={setData}
+                          updateSet={updateSet}
+                        />
+                      ))}
+                    </React.Fragment>
+                  ))
+                )}
+              </TableBody>
+            </Table>
           )}
         </div>
       </div>
