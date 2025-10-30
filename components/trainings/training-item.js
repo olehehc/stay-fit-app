@@ -8,7 +8,6 @@ import { Button } from "../ui/button";
 
 export default function TrainingItem({
   trainingSlug,
-  trainingId,
   title,
   trainingDate,
   onDelete,
@@ -16,11 +15,11 @@ export default function TrainingItem({
   const router = useRouter();
 
   function handleEdit() {
-    router.push(`/trainings/${trainingSlug}/edit?trainingId=${trainingId}`);
+    router.push(`/trainings/${trainingSlug}/edit`);
   }
 
   function handleSession() {
-    router.push(`trainings/${trainingSlug}/session?trainingId=${trainingId}`);
+    router.push(`trainings/${trainingSlug}/session`);
   }
 
   return (
@@ -43,7 +42,7 @@ export default function TrainingItem({
         <Button
           title="Delete training"
           variant="destructive"
-          onClick={() => onDelete(trainingId)}
+          onClick={() => onDelete(trainingSlug)}
         >
           <DeleteIcon />
         </Button>
