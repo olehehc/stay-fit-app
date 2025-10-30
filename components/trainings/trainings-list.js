@@ -4,32 +4,38 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import TrainingItem from "./training-item";
 import DeleteConfirmDialog from "../ui/delete-confirm-dialog";
+import { deleteTrainingBySlug } from "@/lib/repository/trainings";
+import { getCurrentUser } from "@/lib/auth";
 
 export default function TrainingsList({ trainings }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [trainingIdToDelete, setTrainingIdToDelete] = useState(null);
+  const [trainingSlugToDelete, setTrainingSlugToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   async function handleDeleteConfirmed() {
-    if (!trainingIdToDelete) return;
+    if (!trainingSlugToDelete) return;
+
+    const user = await getCurrentUser();
 
     setIsDeleting(true);
     try {
-      const res = await fetch(`/api/trainings/${trainingIdToDelete}`, {
-        method: "DELETE",
-      });
-      if (!res.ok) throw new Error("Delete failed");
+      const deleteTraining = await deleteTrainingBySlug(
+        trainingSlugToDelete,
+        user.id
+      );
+
+      if (!deleteTraining) throw new Error("Delete failed");
 
       startTransition(() => {
         router.refresh();
       });
     } catch (error) {
       console.error(error);
-      alert("Error occurred while deleting. Try again later.");
+      alert("Error occurred while deleting. Try again later."); // TODO replace default alert with custom alert
     } finally {
       setIsDeleting(false);
-      setTrainingIdToDelete(null);
+      setTrainingSlugToDelete(null);
     }
   }
 
@@ -38,9 +44,9 @@ export default function TrainingsList({ trainings }) {
       <DeleteConfirmDialog
         title="Delete exercise?"
         description="This action cannot be undone. This will permanently delete the exercise."
-        open={!!trainingIdToDelete}
+        open={!!trainingSlugToDelete}
         onOpenChange={(open) => {
-          if (!isDeleting && !open) setTrainingIdToDelete(null);
+          if (!isDeleting && !open) setTrainingSlugToDelete(null);
         }}
         onConfirm={handleDeleteConfirmed}
         isPending={isDeleting}
@@ -52,7 +58,7 @@ export default function TrainingsList({ trainings }) {
             <TrainingItem
               trainingSlug={training.slug}
               trainingId={training.id}
-              onDelete={setTrainingIdToDelete}
+              onDelete={setTrainingSlugToDelete}
               title={training.title}
               trainingDate={training.training_date}
             />
