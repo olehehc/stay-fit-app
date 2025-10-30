@@ -14,8 +14,8 @@ export default async function MainHeader() {
       </Link>
       <nav className="flex gap-4">
         <NavLink href="/">Home</NavLink>
+        <NavLink href="/trainings">Trainings</NavLink>
         <NavLink href="/meals">Browse Meals</NavLink>
-        <NavLink href="/dashboard">Dashboard</NavLink>
         {user ? (
           <SignOutButton />
         ) : (
