@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 
 import ExercisesTableRow from "./exercises-table-row";
-import Spinner from "@/components/ui/loading-dots";
+import LoadingDots from "@/components/ui/loading-dots";
 
 export default function ExercisesTable({ columns, data, isLoading = false }) {
   const table = useReactTable({
@@ -58,7 +58,7 @@ export default function ExercisesTable({ columns, data, isLoading = false }) {
                     colSpan={headerColsCount}
                     className="text-center py-6"
                   >
-                    <Spinner className="justify-center" />
+                    <LoadingDots className="justify-center" />
                   </TableCell>
                 </TableRow>
               ) : table.getRowModel().rows.length ? (
