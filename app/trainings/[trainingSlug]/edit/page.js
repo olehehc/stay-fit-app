@@ -1,7 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-
+import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 
@@ -15,70 +14,62 @@ import DraggableRowPreview from "@/components/trainings/exercises/exercises-tabl
 import DeleteConfirmDialog from "@/components/ui/delete-confirm-dialog";
 import TrainingActionCard from "@/components/trainings/training-action-card";
 import { updateTrainingAction } from "./actions";
+import LoadingDots from "@/components/ui/loading-dots";
 
 export default function EditTrainingPage() {
-  const searchParams = useSearchParams();
-  const trainingIdStr = searchParams.get("trainingId");
-  const trainingId = trainingIdStr ? parseInt(trainingIdStr, 10) : null;
+  const { trainingSlug } = useParams();
+
+  const [trainingData, setTrainingData] = useState({});
+  const [droppedRows, setDroppedRows] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [exercises, setExercises] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [reloadExercises, setReloadExercises] = useState(false);
+
+  const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
+  const [activeRow, setActiveRow] = useState(null);
+  const [previewCellWidths, setPreviewCellWidths] = useState(null);
+  const [previewTableWidth, setPreviewTableWidth] = useState(null);
+
+  const [exerciseToDelete, setExerciseToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editingExercise, setEditingExercise] = useState(null);
+
+  const [isSaveTrainingModalOpen, setIsSaveTrainingModalOpen] = useState(false);
 
   useEffect(() => {
+    if (!trainingSlug) return;
+
     const controller = new AbortController();
     const signal = controller.signal;
 
     async function loadTraining() {
-      //TODO loading dots true
+      setLoading(true);
       try {
-        const res = await fetch(`/api/trainings/${trainingId}`, { signal });
+        const res = await fetch(`/api/trainings/${trainingSlug}`, { signal });
         if (!res.ok) throw new Error("Fetch failed");
         const data = await res.json();
-        setDroppedRows(data.training);
-        setTrainingData((prev) => ({
-          ...prev,
-          trainingId,
+
+        setDroppedRows(data.exercises);
+        setTrainingData({
+          slug: trainingSlug,
           title: data.title,
           trainingDate: data.training_date,
-          training: data.training,
-        }));
+          training: data.exercises,
+        });
       } catch (error) {
         if (error.name !== "AbortError") console.error(error);
       } finally {
-        //TODO loading dots false
+        setLoading(false);
       }
     }
 
     loadTraining();
     return () => controller.abort();
-  }, [trainingId]);
-
-  const [trainingData, setTrainingData] = useState({});
-
-  // Create Exercise Modal
-  const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
-
-  // Exercises Table
-  const [exercises, setExercises] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Training Table
-  const [droppedRows, setDroppedRows] = useState([]);
-  const [activeRow, setActiveRow] = useState(null);
-
-  // Delete Exercise
-  const [exerciseToDelete, setExerciseToDelete] = useState(null);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  // Edit Exercise
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [editingExercise, setEditingExercise] = useState(null);
-
-  const [reloadExercises, setReloadExercises] = useState(false);
-
-  // Draggable Row
-  const [previewCellWidths, setPreviewCellWidths] = useState(null);
-  const [previewTableWidth, setPreviewTableWidth] = useState(null);
-
-  // Save Training
-  const [isSaveTrainingModalOpen, setIsSaveTrainingModalOpen] = useState(false);
+  }, [trainingSlug]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -130,7 +121,7 @@ export default function EditTrainingPage() {
         setPreviewCellWidths(null);
         setPreviewTableWidth(null);
       }
-    } catch (err) {
+    } catch {
       setPreviewCellWidths(null);
       setPreviewTableWidth(null);
     }
@@ -158,11 +149,6 @@ export default function EditTrainingPage() {
     setActiveRow(null);
     setPreviewCellWidths(null);
     setPreviewTableWidth(null);
-  }
-
-  function handleEditOpen(exercise) {
-    setEditingExercise(exercise);
-    setIsEditOpen(true);
   }
 
   async function handleDeleteConfirmed() {
@@ -193,7 +179,10 @@ export default function EditTrainingPage() {
   }
 
   const exercisesTableColumns = createExercisesTableColumns({
-    onEditOpen: handleEditOpen,
+    onEditOpen: (exercise) => {
+      setEditingExercise(exercise);
+      setIsEditOpen(true);
+    },
     onDelete: (exercise) => setExerciseToDelete(exercise),
   });
 
@@ -217,6 +206,7 @@ export default function EditTrainingPage() {
               isLoading={isLoading}
             />
           </div>
+
           <div className="w-[60%] ml-auto min-w-0">
             <div className="mb-6">
               <Button
@@ -231,18 +221,18 @@ export default function EditTrainingPage() {
                 droppedRows={droppedRows}
                 setDroppedRows={setDroppedRows}
                 onDelete={deleteTrainingTableRowHandler}
+                loading={loading}
               />
             </div>
           </div>
         </div>
 
+        {/* Modals & dialogs */}
         {isExerciseModalOpen && (
           <Modal onClose={handleClose}>
             <CreateExerciseCard
               onClose={handleClose}
-              onSuccess={() => {
-                setReloadExercises(true);
-              }}
+              onSuccess={() => setReloadExercises(true)}
             />
           </Modal>
         )}
@@ -282,16 +272,15 @@ export default function EditTrainingPage() {
               trainingData={trainingData}
               onClose={() => setIsSaveTrainingModalOpen(false)}
               action={updateTrainingAction}
-              cardTitle={"Update your training"}
-              submitButtonTitle={"Update"}
+              cardTitle="Update your training"
+              submitButtonTitle="Update"
             />
           </Modal>
         )}
 
         <DeleteConfirmDialog
           title="Delete exercise?"
-          description="This action cannot be undone. This will permanently delete the
-            exercise."
+          description="This action cannot be undone. This will permanently delete the exercise."
           open={!!exerciseToDelete}
           onOpenChange={(open) => !open && setExerciseToDelete(null)}
           onConfirm={handleDeleteConfirmed}
