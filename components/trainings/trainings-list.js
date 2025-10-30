@@ -6,9 +6,11 @@ import TrainingItem from "./training-item";
 import DeleteConfirmDialog from "../ui/delete-confirm-dialog";
 import { deleteTrainingBySlug } from "@/lib/repository/trainings";
 import { getCurrentUser } from "@/lib/auth";
+import { toast } from "sonner";
 
 export default function TrainingsList({ trainings }) {
   const router = useRouter();
+
   const [isPending, startTransition] = useTransition();
   const [trainingSlugToDelete, setTrainingSlugToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -26,6 +28,8 @@ export default function TrainingsList({ trainings }) {
       );
 
       if (!deleteTraining) throw new Error("Delete failed");
+
+      toast("Training has been deleted.");
 
       startTransition(() => {
         router.refresh();
@@ -61,6 +65,7 @@ export default function TrainingsList({ trainings }) {
               onDelete={setTrainingSlugToDelete}
               title={training.title}
               trainingDate={training.training_date}
+              completed={training.completed}
             />
           </li>
         ))}
