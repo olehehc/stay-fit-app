@@ -12,12 +12,14 @@ import {
 import FavoriteButton from "../ui/favorite-button";
 
 export default function MealItem({
+  id,
   title,
   slug,
   image,
   username,
   calories,
   protein,
+  is_favorite,
 }) {
   return (
     <Card className="w-full max-w-sm pt-0">
@@ -38,7 +40,7 @@ export default function MealItem({
           <p>{username}</p>
         </CardDescription>
         <CardAction>
-          <FavoriteButton />
+          <FavoriteButton mealId={id} isFavorite={is_favorite} />
         </CardAction>
       </CardHeader>
       <CardContent className="text-sm">
