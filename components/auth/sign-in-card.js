@@ -9,7 +9,6 @@ import {
   CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -18,8 +17,13 @@ import { Label } from "@/components/ui/label";
 import signInAction from "@/app/auth/sign-in/action";
 import LoadingDots from "../ui/loading-dots";
 
-export default function SignInCard() {
-  const [state, formAction, isPending] = useActionState(signInAction, {
+export default function SignInCard({ from = "/" }) {
+  const signInWithFrom = async (prevState, formData) => {
+    formData.append("from", from);
+    return await signInAction(prevState, formData);
+  };
+
+  const [state, formAction, isPending] = useActionState(signInWithFrom, {
     errors: null,
     data: {},
   });
