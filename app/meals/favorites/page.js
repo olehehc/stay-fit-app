@@ -10,7 +10,7 @@ export default async function MyFavoriteMealsPage() {
 
   return (
     <main className="flex-1 pt-[92px] p-6 bg-gray-50">
-      <MealsGrid meals={meals} />
+      <MealsGrid meals={meals} currentUserId={user?.id} />
     </main>
   );
 }
