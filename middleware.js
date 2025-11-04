@@ -14,10 +14,10 @@ async function verifyToken(token) {
 }
 
 export async function middleware(req) {
-  console.log("Cookies:", req.cookies.get(COOKIE_NAME));
   const pathname = req.nextUrl.pathname;
 
   const token = req.cookies.get(COOKIE_NAME)?.value;
+
   if (!token) {
     const signInUrl = new URL("/auth/sign-in", req.url);
     signInUrl.searchParams.set("from", pathname);
@@ -35,5 +35,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/meals/share", "/trainings/:path*"],
+  matcher: ["/meals/my-meals", "/meals/favorites", "/trainings/:path*"],
 };
