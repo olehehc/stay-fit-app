@@ -1,9 +1,10 @@
 "use server";
 
-import { Textarea } from "@/components/ui/textarea";
+import FavoriteButton from "@/components/meals/favorite-button";
 import { getCurrentUser } from "@/lib/auth";
 import { getMeal } from "@/lib/repository/meals";
 import Image from "next/image";
+import DeleteMealButton from "@/components/meals/delete-meal-button";
 
 export default async function MealPage({ params }) {
   const { mealSlug } = await params;
@@ -23,7 +24,7 @@ export default async function MealPage({ params }) {
     <main className="flex flex-1 pt-[92px] p-6 bg-gray-50 justify-center">
       <div className="flex flex-col gap-6 max-w-5xl w-full">
         <div className="flex flex-col lg:flex-row gap-6 items-center lg:items-start">
-          <div className="relative w-full sm:w-[400px] md:w-[500px] lg:w-[640px] aspect-video rounded-md overflow-hidden">
+          <div className="relative w-full sm:w-[500px] md:w-[550px] lg:w-[640px] aspect-video rounded-md overflow-hidden">
             <Image
               src={meal.image}
               alt={`${meal.title} blurred`}
@@ -47,6 +48,12 @@ export default async function MealPage({ params }) {
             <p className="text-sm text-muted-foreground">
               Protein: {meal.protein} g
             </p>
+            <div className="flex gap-4 justify-center lg:justify-start">
+              <FavoriteButton mealId={meal.id} isFavorite={meal.is_favorite} />
+              {user?.id === meal.user_id && (
+                <DeleteMealButton mealId={meal.id} />
+              )}
+            </div>
           </div>
         </div>
 
