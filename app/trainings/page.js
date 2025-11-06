@@ -9,12 +9,8 @@ import { formatDateToYMD } from "@/lib/utils";
 export default async function TrainingsPage({ searchParams: rawSearchParams }) {
   const searchParams = await rawSearchParams;
 
-  const today = new Date();
-  const nextWeek = new Date();
-  nextWeek.setDate(today.getDate() + 6);
-
-  const from = searchParams?.dateFrom ? new Date(searchParams.dateFrom) : today;
-  const to = searchParams?.dateTo ? new Date(searchParams.dateTo) : nextWeek;
+  const from = searchParams?.dateFrom ? new Date(searchParams.dateFrom) : null;
+  const to = searchParams?.dateTo ? new Date(searchParams.dateTo) : null;
 
   const user = await getCurrentUser();
 
@@ -25,27 +21,25 @@ export default async function TrainingsPage({ searchParams: rawSearchParams }) {
   );
 
   return (
-    <main className="pt-[92px] p-6 bg-gray-50 flex-1 flex justify-center">
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 items-stretch">
-        <div className="flex-none flex flex-col min-h-0">
-          <Button asChild className="mb-4 self-start w-auto">
+    <main className="pt-[68px] bg-gray-50 flex-1 flex justify-center">
+      <div className="mx-auto flex flex-col lg:flex-row w-full">
+        <div className="flex flex-col p-6 justify-between items-start h-full bg-gray-100 rounded-r-3xl">
+          <Button asChild className="w-auto">
             <Link href="/trainings/create-training">Add training</Link>
           </Button>
-          <div className="flex-1 min-h-0 max-h-[calc(59vh-92px-1.5rem)] overflow-hidden min-w-[576px]">
-            <div className="h-full overflow-y-auto">
-              {trainings.length === 0 ? (
-                <div className="flex justify-center items-center">
-                  <p>Lack of Trainings</p>
-                </div>
-              ) : (
-                <TrainingsList trainings={trainings} />
-              )}
-            </div>
-          </div>
+          <ClientFilters defaultRange={{ from, to }} />
         </div>
 
-        <div className="flex flex-col gap-4 items-start min-h-0">
-          <ClientFilters defaultRange={{ from, to }} />
+        <div className="flex-1 min-h-0 overflow-hidden p-6 flex justify-center">
+          <div className="h-full overflow-y-auto">
+            {trainings.length === 0 ? (
+              <div className="h-full flex justify-center items-center">
+                <p>Lack of Trainings</p>
+              </div>
+            ) : (
+              <TrainingsList trainings={trainings} />
+            )}
+          </div>
         </div>
       </div>
     </main>
