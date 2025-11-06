@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,7 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import FavoriteButton from "../ui/favorite-button";
+import FavoriteButton from "./favorite-button";
+import DeleteMealButton from "./delete-meal-button";
 
 export default function MealItem({
   id,
@@ -20,17 +24,21 @@ export default function MealItem({
   calories,
   protein,
   is_favorite,
+  user_id,
+  currentUserId,
 }) {
   return (
     <Card className="w-full max-w-sm pt-0">
       <div className="relative h-60 overflow-hidden rounded-t-xl">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          className="object-cover object-center"
-          priority={false}
-        />
+        <Link href={`/meals/${slug}`}>
+          <Image
+            src={image}
+            alt={title}
+            fill
+            className="object-cover object-center"
+            priority={false}
+          />
+        </Link>
       </div>
       <CardHeader>
         <CardTitle>
@@ -39,8 +47,9 @@ export default function MealItem({
         <CardDescription>
           <p>{username}</p>
         </CardDescription>
-        <CardAction>
+        <CardAction className="flex gap-2">
           <FavoriteButton mealId={id} isFavorite={is_favorite} />
+          {currentUserId === user_id && <DeleteMealButton mealId={id} />}
         </CardAction>
       </CardHeader>
       <CardContent className="text-sm">
