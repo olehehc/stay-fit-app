@@ -35,5 +35,10 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ["/meals/my-meals", "/meals/favorites", "/trainings/:path*"],
+  matcher: [
+    "/meals/my-meals",
+    "/meals/favorites",
+    "/meals/share",
+    "/trainings/:path*",
+  ],
 };
