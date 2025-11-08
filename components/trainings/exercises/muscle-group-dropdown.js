@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function MuscleGroupDropdown({ name, defaultValue }) {
+export default function MuscleGroupDropdown({ name, defaultValue, className }) {
   const [value, setValue] = useState(defaultValue ?? "");
 
   const muscleGroups = [
@@ -32,7 +32,7 @@ export default function MuscleGroupDropdown({ name, defaultValue }) {
   return (
     <>
       <Select value={value} onValueChange={setValue}>
-        <SelectTrigger className="w-full">
+        <SelectTrigger className={`w-full ${className || ""}`}>
           <SelectValue placeholder="Select muscle group"></SelectValue>
         </SelectTrigger>
         <SelectContent>

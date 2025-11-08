@@ -12,7 +12,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function ExerciseTypeDropdown({ name, defaultValue }) {
+export default function ExerciseTypeDropdown({
+  name,
+  defaultValue,
+  className,
+}) {
   const [value, setValue] = useState(defaultValue ?? "");
 
   const types = [
@@ -26,8 +30,8 @@ export default function ExerciseTypeDropdown({ name, defaultValue }) {
   return (
     <>
       <Select value={value} onValueChange={setValue}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select exercise type"></SelectValue>
+        <SelectTrigger className={`w-full ${className || ""}`}>
+          <SelectValue placeholder="Select exercise type" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
