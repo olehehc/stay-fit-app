@@ -1,4 +1,6 @@
-import { useState, useRef } from "react";
+"use client";
+
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
 import { Label } from "./label";
@@ -9,11 +11,24 @@ export default function ImagePicker({
   label,
   name,
   error,
-  defaultValue = "",
+  defaultImage,
   onChange,
 }) {
-  const [pickedImage, setPickedImage] = useState(defaultValue || null);
+  const [pickedImage, setPickedImage] = useState(null);
   const pickerRef = useRef();
+
+  useEffect(() => {
+    if (defaultImage instanceof File) {
+      const url = URL.createObjectURL(defaultImage);
+      setPickedImage(url);
+
+      return () => URL.revokeObjectURL(url);
+    }
+
+    if (typeof defaultImage === "string") {
+      setPickedImage(defaultImage);
+    }
+  }, [defaultImage]);
 
   function handlePickClick() {
     pickerRef.current.click();
@@ -28,14 +43,9 @@ export default function ImagePicker({
       return;
     }
 
-    const fileReader = new FileReader();
-
-    fileReader.onload = () => {
-      setPickedImage(fileReader.result);
-      if (typeof onChange === "function") onChange(file);
-    };
-
-    fileReader.readAsDataURL(file);
+    const url = URL.createObjectURL(file);
+    setPickedImage(url);
+    if (typeof onChange === "function") onChange(file);
   }
 
   return (
