@@ -63,6 +63,7 @@ export default function EditTrainingPage() {
 
         setDroppedRows(data.exercises);
         setTrainingData({
+          id: data.id,
           slug: trainingSlug,
           title: data.title,
           completed: data.completed,
