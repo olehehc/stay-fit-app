@@ -44,7 +44,7 @@ export async function updateTrainingAction(trainingData, prevState, formData) {
     };
   }
 
-  await updateTraining(trainingData.trainingId, data, user.id);
+  await updateTraining(trainingData.id, data, user.id);
 
   return { ok: true };
 }
