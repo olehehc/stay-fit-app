@@ -8,7 +8,7 @@ export default async function MainHeader() {
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-black p-4 flex justify-between items-center">
       <Link href="/" className="text-white text-xl font-bold">
-        💪 FitMeals
+        💪 StayFit
       </Link>
       <Navigation user={user} />
     </header>
