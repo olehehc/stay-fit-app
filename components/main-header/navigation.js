@@ -12,7 +12,6 @@ import {
   navigationMenuTriggerStyle,
 } from "../ui/navigation-menu";
 import { NavigationMenuTrigger } from "@radix-ui/react-navigation-menu";
-import { usePathname } from "next/navigation";
 
 export default function Navigation({ user }) {
   return (
@@ -55,6 +54,9 @@ export default function Navigation({ user }) {
                 </NavigationMenuLink>
                 <NavigationMenuLink asChild>
                   <Link href="/meals/favorites">My Favorite Meals</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link href="/meals/share">Share Meal</Link>
                 </NavigationMenuLink>
               </li>
             </ul>
