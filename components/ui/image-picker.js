@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-
 import { Label } from "./label";
 import { Input } from "./input";
 import { Button } from "./button";
@@ -18,15 +17,21 @@ export default function ImagePicker({
   const pickerRef = useRef();
 
   useEffect(() => {
+    if (!defaultImage) return;
+
     if (defaultImage instanceof File) {
       const url = URL.createObjectURL(defaultImage);
       setPickedImage(url);
-
       return () => URL.revokeObjectURL(url);
     }
 
     if (typeof defaultImage === "string") {
-      setPickedImage(defaultImage);
+      if (defaultImage.startsWith("http") || defaultImage.startsWith("data:")) {
+        setPickedImage(defaultImage);
+      } else {
+        const s3Url = `https://s3.eu-north-1.amazonaws.com/${process.env.NEXT_PUBLIC_AWS_IMAGE_HOSTNAME}/${defaultImage}`;
+        setPickedImage(s3Url);
+      }
     }
   }, [defaultImage]);
 
@@ -36,13 +41,11 @@ export default function ImagePicker({
 
   function handleImageChange(event) {
     const file = event.target.files[0];
-
     if (!file) {
       setPickedImage(null);
-      if (pickerRef.current) pickerRef.current.value = "";
+      pickerRef.current.value = "";
       return;
     }
-
     const url = URL.createObjectURL(file);
     setPickedImage(url);
     if (typeof onChange === "function") onChange(file);
@@ -53,19 +56,19 @@ export default function ImagePicker({
       <Label>{label}</Label>
       <div className="grid grid-cols-2 gap-4">
         <div
-          className={`w-full h-40 border rounded-md flex items-center justify-center overflow-hidden relative ${
+          className={`w-full h-40 border rounded-md flex items-center justify-center overflow-hidden relative shadow-xs ${
             error ? "border-destructive" : ""
           }`}
         >
           {pickedImage ? (
             <Image
               src={pickedImage}
-              alt="The image selected by the user."
+              alt={pickedImage}
               fill
               className="object-cover object-center"
             />
           ) : (
-            <span className=" text-sm text-gray-400">No image picked yet</span>
+            <span className="text-sm text-gray-400">No image picked yet</span>
           )}
           <Input
             id={name}
