@@ -30,13 +30,13 @@ export default async function MealPage({ params }) {
         <div className="flex flex-col lg:flex-row gap-6 items-center lg:items-start">
           <div className="relative w-full sm:w-[500px] md:w-[550px] lg:w-[640px] aspect-video rounded-md overflow-hidden">
             <Image
-              src={meal.image}
+              src={`https://s3.eu-north-1.amazonaws.com/${process.env.NEXT_PUBLIC_AWS_IMAGE_HOSTNAME}/${meal.image}`}
               alt={`${meal.title} blurred`}
               fill
               className="object-cover blur-xl scale-110 brightness-75"
             />
             <Image
-              src={meal.image}
+              src={`https://s3.eu-north-1.amazonaws.com/${process.env.NEXT_PUBLIC_AWS_IMAGE_HOSTNAME}/${meal.image}`}
               alt={meal.title}
               fill
               className="object-contain relative z-10"
