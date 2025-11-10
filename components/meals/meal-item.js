@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -32,7 +31,7 @@ export default function MealItem({
       <div className="relative h-60 overflow-hidden rounded-t-xl">
         <Link href={`/meals/${slug}`}>
           <Image
-            src={image}
+            src={`https://s3.eu-north-1.amazonaws.com/${process.env.NEXT_PUBLIC_AWS_IMAGE_HOSTNAME}/${image}`}
             alt={title}
             fill
             className="object-cover object-center"
