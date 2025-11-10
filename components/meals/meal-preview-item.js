@@ -13,7 +13,7 @@ export default function MealPreviewItem({ id, image, title, username, slug }) {
     >
       {image ? (
         <Image
-          src={image}
+          src={`https://s3.eu-north-1.amazonaws.com/${process.env.NEXT_PUBLIC_AWS_IMAGE_HOSTNAME}/${image}`}
           alt={title}
           width={48}
           height={48}
