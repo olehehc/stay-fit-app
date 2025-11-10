@@ -15,14 +15,14 @@ import { NavigationMenuTrigger } from "@radix-ui/react-navigation-menu";
 
 export default function Navigation({ user }) {
   return (
-    <NavigationMenu>
+    <NavigationMenu viewport={false}>
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <Link href="/">Home</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
-        <NavigationMenuItem className="hidden md:block">
+        <NavigationMenuItem>
           <NavigationMenuTrigger className={navigationMenuTriggerStyle()}>
             Trainings
           </NavigationMenuTrigger>
@@ -39,7 +39,7 @@ export default function Navigation({ user }) {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem className="hidden md:block">
+        <NavigationMenuItem>
           <NavigationMenuTrigger className={navigationMenuTriggerStyle()}>
             Meals
           </NavigationMenuTrigger>
