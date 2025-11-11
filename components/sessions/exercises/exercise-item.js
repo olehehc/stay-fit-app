@@ -43,41 +43,79 @@ export default function ExerciseItem({
             muscleGroup={muscleGroup}
             instructions={instructions}
             image={image}
+            onClose={handleClose}
           />
         </Modal>
       )}
-      <div className="bg-white rounded-md border shadow-sm w-3xl p-4 space-y-4">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex gap-2 items-center">
+
+      <div className="bg-white rounded-md border shadow-sm p-4 space-y-3 sm:space-y-4 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl mx-auto">
+        <div className="flex items-start justify-between gap-2 sm:gap-3 sm:flex-nowrap">
+          <div className="flex items-start gap-2 sm:gap-3 min-w-0">
             <Button
               title={isExpanded ? "Hide sets" : "Show sets"}
               variant="link"
               size="icon"
               onClick={handleExpand}
+              className="p-1 hidden sm:block"
+              aria-expanded={isExpanded}
             >
-              {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              {isExpanded ? (
+                <ExpandLessIcon fontSize="small" />
+              ) : (
+                <ExpandMoreIcon fontSize="small" />
+              )}
             </Button>
-            <h2 className="font-semibold">{title}</h2>
+
+            <div className="min-w-0">
+              <h2 className="font-semibold text-base sm:text-lg md:text-xl truncate">
+                {title}
+              </h2>
+              <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs sm:text-sm text-gray-500">
+                <span>
+                  <span className="font-medium">Type:</span> {exerciseType}
+                </span>
+                <span>
+                  <span className="font-medium">Muscle:</span> {muscleGroup}
+                </span>
+              </div>
+            </div>
           </div>
 
-          <div className="flex items-center">
-            <Button
-              variant="iconGhost"
-              size="icon"
-              onClick={() => setIsExerciseModalOpen(true)}
-            >
-              <InfoIcon />
-            </Button>
+          <Button
+            variant="iconGhost"
+            size="icon"
+            onClick={() => setIsExerciseModalOpen(true)}
+            aria-label={`Open ${title} info`}
+            className="p-2 sm:p-1"
+          >
+            <InfoIcon fontSize="small" />
+          </Button>
+        </div>
+
+        <div
+          className={`transition-all duration-300 overflow-hidden ${
+            isExpanded ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="mt-2 overflow-x-auto">
+            <SetsList
+              sets={sets}
+              exerciseId={exerciseId}
+              toggleComplete={toggleComplete}
+              updateSet={updateSet}
+            />
           </div>
         </div>
-        {isExpanded && (
-          <SetsList
-            sets={sets}
-            exerciseId={exerciseId}
-            toggleComplete={toggleComplete}
-            updateSet={updateSet}
-          />
-        )}
+
+        <div className="sm:hidden flex justify-center">
+          <Button
+            variant="ghost"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-sm text-gray-600"
+          >
+            {isExpanded ? "Hide sets" : "Show sets"}
+          </Button>
+        </div>
       </div>
     </>
   );
