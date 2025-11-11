@@ -4,7 +4,7 @@ import ExerciseItem from "./exercise-item";
 
 export default function ExercisesList({ training, toggleComplete, updateSet }) {
   return (
-    <ul className="space-y-4">
+    <ul className="space-y-4 sm:space-y-6">
       {training.exercises.map((exercise) => (
         <ExerciseItem
           key={exercise.id}
