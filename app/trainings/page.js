@@ -1,7 +1,5 @@
-import Link from "next/link";
 import TrainingsList from "@/components/trainings/trainings-list";
-import ClientFilters from "@/components/trainings/client-filters";
-import { Button } from "@/components/ui/button";
+import TrainingsSidebar from "@/components/trainings/trainings-sidebar";
 import { getCurrentUser } from "@/lib/auth";
 import { getTrainingsByUserAndDateRange } from "@/lib/repository/trainings";
 import { formatDateToYMD } from "@/lib/utils";
@@ -25,15 +23,10 @@ export default async function TrainingsPage({ searchParams: rawSearchParams }) {
   return (
     <main className="pt-[68px] bg-gray-50 flex-1 flex justify-center">
       <div className="mx-auto flex flex-col lg:flex-row w-full">
-        <div className="flex flex-col p-6 gap-6 items-start h-full bg-gray-100 rounded-r-3xl">
-          <Button asChild className="w-auto">
-            <Link href="/trainings/create-training">Add training</Link>
-          </Button>
-          <ClientFilters defaultRange={{ from, to }} />
-        </div>
+        <TrainingsSidebar from={from} to={to} />
 
         <div className="flex-1 min-h-0 overflow-hidden p-6 flex justify-center">
-          <div className="h-full overflow-y-auto">
+          <div className="h-full overflow-y-auto w-full">
             {trainings.length === 0 ? (
               <div className="h-full flex justify-center items-center">
                 <p>Lack of Trainings</p>
