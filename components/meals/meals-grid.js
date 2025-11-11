@@ -14,7 +14,7 @@ export default function MealsGrid({ meals, currentUserId }) {
   const currentMeals = meals.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div>
+    <div className="flex flex-col flex-1 min-h-0 justify-between">
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 list-none p-0 m-0">
         {currentMeals.map((meal) => (
           <li key={meal.id}>
