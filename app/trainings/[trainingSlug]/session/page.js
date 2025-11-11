@@ -29,7 +29,7 @@ export default async function TrainingSessionPage({ params }) {
   }
 
   return (
-    <main className="flex flex-col items-center justify-start pt-[92px] p-6 bg-gray-50 flex-1">
+    <main className="flex flex-col justify-start pt-[92px] p-6 bg-gray-50 flex-1">
       {trainingData.completed ? (
         <TrainingSessionResults trainingSessionData={trainingSessionData} />
       ) : (
