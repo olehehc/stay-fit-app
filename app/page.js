@@ -29,30 +29,24 @@ export default async function Home() {
   const meals = await getMealsByUser(user.id);
 
   return (
-    <main className="flex-1 p-6 pt-[68px] bg-gray-50">
-      <div className="max-w-5xl mt-6 mx-auto space-y-8">
+    <main className="flex-1 p-4 sm:p-4 bg-gray-50 overflow-x-hidden">
+      <div className="w-full p-12 max-w-5xl mt-12 mx-auto px-4 sm:px-6 space-y-8">
         <header>
-          <h1 className="text-3xl font-semibold">
+          <h1 className="text-2xl sm:text-3xl font-semibold">
             Welcome back, {user.username || "Athlete"}!
           </h1>
         </header>
 
-        <section className="grid md:grid-cols-2 gap-6">
-          <Card className="p-6 flex flex-col justify-between">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="w-full p-4 sm:p-6 flex flex-col justify-between">
             <div className="flex flex-col gap-6">
-              <h2 className="text-xl font-semibold mb-3">
+              <h2 className="text-lg sm:text-xl font-semibold mb-3">
                 Today&rsquo;s pending trainings
               </h2>
-              {trainings && trainings.length > 0 ? (
+              {trainings?.length > 0 ? (
                 <ul className="space-y-3 mb-4">
                   {trainings.map((training) => (
-                    <TrainingPreviewItem
-                      key={training.id}
-                      id={training.id}
-                      title={training.title}
-                      slug={training.slug}
-                      completed={training.completed}
-                    />
+                    <TrainingPreviewItem key={training.id} {...training} />
                   ))}
                 </ul>
               ) : (
@@ -62,7 +56,7 @@ export default async function Home() {
               )}
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               <Link href="/trainings">
                 <Button>View all</Button>
               </Link>
@@ -72,21 +66,15 @@ export default async function Home() {
             </div>
           </Card>
 
-          <Card className="p-6 flex flex-col justify-between">
+          <Card className="w-full p-4 sm:p-6 flex flex-col justify-between">
             <div className="flex flex-col gap-6">
-              <h2 className="text-xl font-semibold mb-3">Meals & Nutrition</h2>
-
-              {meals && meals.length > 0 ? (
+              <h2 className="text-lg sm:text-xl font-semibold mb-3">
+                Meals & Nutrition
+              </h2>
+              {meals?.length > 0 ? (
                 <ul className="space-y-3 mb-4">
                   {meals.slice(0, 3).map((meal) => (
-                    <MealPreviewItem
-                      key={meal.id}
-                      id={meal.id}
-                      image={meal.image}
-                      title={meal.title}
-                      username={meal.username}
-                      slug={meal.slug}
-                    />
+                    <MealPreviewItem key={meal.id} {...meal} />
                   ))}
                 </ul>
               ) : (
@@ -96,7 +84,7 @@ export default async function Home() {
               )}
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-3">
               <Link href="/meals">
                 <Button>Browse Meals</Button>
               </Link>
