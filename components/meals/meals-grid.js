@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
-import { Button } from "../ui/button";
 import MealItem from "./meal-item";
-import MealsPagination from "./meals-pagination";
+import AppPagination from "../ui/app-pagination";
 
 export default function MealsGrid({ meals, currentUserId }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,7 +23,7 @@ export default function MealsGrid({ meals, currentUserId }) {
         ))}
       </ul>
 
-      <MealsPagination
+      <AppPagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
