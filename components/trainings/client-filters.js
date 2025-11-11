@@ -9,7 +9,10 @@ import { CalendarWithRangeSelection } from "../ui/calendar-with-range-selection"
 import { addDays, isValid, parseISO, startOfDay } from "date-fns";
 import StatusFilterDropdown from "./status-filter-dropdown";
 
-export default function ClientFilters({ defaultRange }) {
+export default function ClientFilters({
+  defaultRange,
+  calendarCellSizeSpacing,
+}) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -108,7 +111,7 @@ export default function ClientFilters({ defaultRange }) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-fit">
       <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
         <p className="mb-2 text-sm font-medium text-gray-600">Status</p>
         <StatusFilterDropdown
@@ -130,12 +133,11 @@ export default function ClientFilters({ defaultRange }) {
           />
         </div>
 
-        <div className="flex-1 min-h-0 max-h-[calc(100vh-92px-1.5rem)] overflow-hidden">
-          <CalendarWithRangeSelection
-            dateRange={dateRange}
-            setDateRange={handleRangeChange}
-          />
-        </div>
+        <CalendarWithRangeSelection
+          dateRange={dateRange}
+          setDateRange={handleRangeChange}
+          cellSizeSpacing={calendarCellSizeSpacing}
+        />
       </div>
     </div>
   );
