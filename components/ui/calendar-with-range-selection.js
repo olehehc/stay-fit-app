@@ -1,7 +1,11 @@
 import { Calendar } from "@/components/ui/calendar";
 import { isValid } from "date-fns";
 
-export function CalendarWithRangeSelection({ dateRange, setDateRange }) {
+export function CalendarWithRangeSelection({
+  dateRange,
+  setDateRange,
+  cellSizeSpacing = "",
+}) {
   const hasRange =
     dateRange &&
     dateRange.from &&
@@ -20,7 +24,7 @@ export function CalendarWithRangeSelection({ dateRange, setDateRange }) {
       defaultMonth={defaultMonth}
       selected={selected}
       onSelect={setDateRange}
-      className="rounded-lg border [--cell-size:--spacing(11)] md:[--cell-size:--spacing(12)] shadow-sm"
+      className={`rounded-lg border ${cellSizeSpacing} shadow-sm`}
     />
   );
 }
