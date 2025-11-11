@@ -19,7 +19,7 @@ export default function TrainingPreviewItem({ id, title, slug, completed }) {
             Completed
           </Badge>
         ) : (
-          <Badge className="text-xs font-medium text-gray-800 bg-gray-200 rounded-full">
+          <Badge className="text-xs font-medium text-yellow-800 bg-yellow-100 rounded-full">
             Pending
           </Badge>
         )}
