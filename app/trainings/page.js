@@ -21,7 +21,7 @@ export default async function TrainingsPage({ searchParams: rawSearchParams }) {
   );
 
   return (
-    <main className="pt-[68px] bg-gray-50 flex-1 flex justify-center">
+    <main className="pt-[132px] lg:pt-[68px] bg-gray-50 flex-1 flex justify-center">
       <div className="mx-auto flex flex-col lg:flex-row w-full">
         <TrainingsSidebar from={from} to={to} />
 
