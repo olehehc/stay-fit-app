@@ -85,10 +85,10 @@ export default function ExerciseItem({
 
               <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-xs sm:text-sm text-gray-500">
                 <span>
-                  <span className="font-medium">Type:</span> {exerciseType}
+                  <span className="font-medium">Muscle:</span> {muscleGroup}
                 </span>
                 <span>
-                  <span className="font-medium">Muscle:</span> {muscleGroup}
+                  <span className="font-medium">Type:</span> {exerciseType}
                 </span>
               </div>
             </div>
