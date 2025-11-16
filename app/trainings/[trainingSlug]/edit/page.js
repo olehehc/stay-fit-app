@@ -115,6 +115,7 @@ export default function EditTrainingPage() {
 
   function handleClose() {
     setIsExerciseModalOpen(false);
+    !isDesktop && setTimeout(() => sheetRef.current?.open(), 80);
   }
 
   // Desktop DnD handlers (only used when isDesktop)
@@ -196,16 +197,18 @@ export default function EditTrainingPage() {
       const res = await fetch(`/api/exercises/${exerciseToDelete.id}`, {
         method: "DELETE",
       });
-      if (!res.ok) throw new Error("Delete failed");
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data.error || "Delete failed");
+      }
 
       setReloadExercises((prev) => prev + 1);
       setDroppedRows((prev) =>
         prev.filter((e) => e.id !== exerciseToDelete.id)
       );
-    } catch (err) {
-      toast.error(
-        "Error occurred while deleting. Reload page and try again later."
-      );
+    } catch (error) {
+      toast.error(error.message);
     } finally {
       setIsDeleting(false);
       setExerciseToDelete(null);
@@ -382,7 +385,7 @@ export default function EditTrainingPage() {
           <TrainingActionCard
             trainingTitle={trainingData.title}
             trainingDate={trainingData.trainingDate}
-            trainingData={trainingData}
+            trainingData={{ ...trainingData, training: droppedRows }}
             onClose={() => setIsSaveTrainingModalOpen(false)}
             action={updateTrainingAction}
             cardTitle="Update your training"
