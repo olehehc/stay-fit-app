@@ -57,7 +57,7 @@ export default function TrainingsSidebar({ from, to }) {
         </Sheet>
       </div>
 
-      <div className="hidden lg:flex flex-col p-6 gap-6 items-start h-full bg-gray-100 rounded-r-3xl">
+      <div className="hidden lg:flex flex-col p-6 gap-6 items-start h-full">
         <Button asChild className="w-auto">
           <Link href="/trainings/create-training">Add training</Link>
         </Button>
