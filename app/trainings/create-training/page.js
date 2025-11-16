@@ -70,6 +70,7 @@ export default function CreateTrainingPage() {
 
   function handleClose() {
     setIsExerciseModalOpen(false);
+    !isDesktop && setTimeout(() => sheetRef.current?.open(), 80);
   }
 
   // Desktop DnD handlers (only used when isDesktop)
