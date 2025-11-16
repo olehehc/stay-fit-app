@@ -1,9 +1,13 @@
-FROM node:18-alpine
+FROM node:20
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+
+RUN apt-get update && apt-get install -y python3 make g++ \
+    && npm install \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY . .
 
