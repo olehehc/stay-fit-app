@@ -5,9 +5,15 @@ import { getCurrentUser } from "@/lib/auth";
 import { getMealsByUser } from "@/lib/repository/meals";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function MyMealsPage() {
   const user = await getCurrentUser();
+
+  if (!user) {
+    return redirect("/auth/sign-in");
+  }
+
   const meals = await getMealsByUser(user?.id);
 
   return (
