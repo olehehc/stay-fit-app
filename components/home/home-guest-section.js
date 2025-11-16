@@ -9,31 +9,16 @@ export default function HomeGuestSection() {
   return (
     <main className="flex-1 p-6 pt-[68px] bg-gray-50">
       <div className="max-w-5xl mt-6 mx-auto text-center space-y-10">
-        <h1
-          className="
-                      flex flex-wrap justify-center items-center gap-3
-                      text-3xl sm:text-4xl lg:text-5xl font-bold
-                      text-gray-900 dark:text-gray-100
-                      px-4 sm:px-6 lg:px-8
-                      py-6 sm:py-10 lg:py-16
-                      text-center
-                    "
-        >
+        <h1 className="flex flex-wrap justify-center items-center gap-3 text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 px-4 sm:px-6 lg:px-8 py-6 sm:py-10 lg:py-16 text-center">
           Welcome to{" "}
-          <span
-            className="
-                        px-3 sm:px-4 py-1.5 sm:py-2
-                        text-white bg-black dark:bg-white dark:text-black
-                        rounded-xl whitespace-nowrap shadow-md
-                      "
-          >
+          <span className="px-3 sm:px-4 py-1.5 sm:py-2 text-white bg-black dark:bg-white dark:text-black rounded-xl whitespace-nowrap shadow-md">
             💪 StayFit
           </span>
         </h1>
 
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Build consistency in your fitness journey. Create training plans,
-          analyze results and browse meals — all in one place.
+          analyze results and browse meals - all in one place.
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-6">
