@@ -16,9 +16,13 @@ export async function DELETE(req, { params }) {
       return new Response("Invalid ID", { status: 400 });
     }
 
-    const deleted = await deleteExerciseByUserId(id, user.id);
+    const result = await deleteExerciseByUserId(id, user.id);
 
-    if (!deleted) {
+    if (result?.error) {
+      return Response.json({ error: result.message }, { status: 400 });
+    }
+
+    if (!result) {
       return new Response("Exercise not found or not yours", { status: 404 });
     }
 
