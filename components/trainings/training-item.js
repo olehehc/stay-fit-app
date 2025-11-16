@@ -80,14 +80,14 @@ export default function TrainingItem({
         <Button
           title="Edit training"
           variant="outline"
-          onClick={handleEdit}
-          disabled={completed}
-          className="
+          onClick={completed ? () => {} : handleEdit}
+          className={`
             flex-1 sm:flex-none
             h-9 sm:h-10
             px-4 sm:px-5
             text-sm sm:text-base font-medium
-          "
+            ${completed ? "cursor-not-allowed" : ""}
+          `}
         >
           <EditIcon fontSize="small" />
         </Button>
