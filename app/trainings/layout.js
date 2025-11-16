@@ -9,5 +9,5 @@ export default async function TrainingsLayout({ children }) {
     return redirect("/auth/sign-in");
   }
 
-  return <section>{children}</section>;
+  return <section className="flex-1 flex flex-col">{children}</section>;
 }
