@@ -24,7 +24,7 @@ export default function TrainingTable({
   droppedRows: rows = [],
   setDroppedRows,
   onDelete,
-  loading = false,
+  isLoading = false,
   isDesktop,
 }) {
   const { setNodeRef, isOver } = useDroppable({
@@ -94,7 +94,7 @@ export default function TrainingTable({
             isOver ? "bg-blue-50" : "bg-white"
           }`}
         >
-          {rows.length === 0 && !loading ? (
+          {rows.length === 0 && !isLoading ? (
             <div className="h-full w-full flex flex-col items-center justify-center p-6">
               {isDesktop && (
                 <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white/50">
@@ -108,7 +108,7 @@ export default function TrainingTable({
           ) : (
             <Table className="min-w-full table-fixed">
               <TableBody>
-                {loading ? (
+                {isLoading ? (
                   <TableRow className="h-full">
                     <TableCell className="text-center py-6">
                       <LoadingDots className="justify-center" />
