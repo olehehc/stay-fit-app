@@ -18,7 +18,7 @@ import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import LoadingDots from "@/components/ui/loading-dots";
 
 export default function ExercisesSheet({
-  exercises,
+  exercises = [],
   isLoading,
   onAddToTraining,
   onOpenCreate,
@@ -49,9 +49,21 @@ export default function ExercisesSheet({
           <SheetContent side="bottom" className="h-[70vh] overflow-auto">
             <SheetHeader>
               <SheetTitle>Exercises</SheetTitle>
+              {exercises.length > 0 && (
+                <Button
+                  onClick={() => {
+                    onOpenCreate();
+                    setOpen(false);
+                  }}
+                  aria-label="Add exercise"
+                  className="sm:w-fit w-auto"
+                >
+                  Add
+                </Button>
+              )}
             </SheetHeader>
 
-            <div className="flex flex-col h-full justify-between p-4">
+            <div className="flex flex-col h-full items-center justify-between p-4">
               {isLoading ? (
                 <LoadingDots />
               ) : exercises.length === 0 ? (
@@ -61,7 +73,10 @@ export default function ExercisesSheet({
                   </p>
                   <Button
                     variant="ghost"
-                    onClick={onOpenCreate}
+                    onClick={() => {
+                      onOpenCreate();
+                      setOpen(false);
+                    }}
                     aria-label="Add exercise"
                   >
                     Add
