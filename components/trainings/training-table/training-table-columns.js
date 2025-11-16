@@ -23,7 +23,15 @@ export default function getTrainingTableColumns(setRows, onDelete) {
               r.id === row.original.id
                 ? {
                     ...r,
-                    sets: [...r.sets, { reps: 10, weight: 0, rest_period: 1 }],
+                    sets: [
+                      ...r.sets,
+                      {
+                        id: crypto.randomUUID(),
+                        reps: 10,
+                        weight: 0,
+                        rest_period: 1,
+                      },
+                    ],
                   }
                 : r
             )
