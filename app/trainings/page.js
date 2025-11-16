@@ -22,7 +22,7 @@ export default async function TrainingsPage({ searchParams: rawSearchParams }) {
 
   return (
     <main className="pt-[132px] lg:pt-[68px] bg-gray-50 flex-1 flex justify-center">
-      <div className="mx-auto flex flex-col lg:flex-row w-full">
+      <div className="max-w-[1440px] w-full mx-auto flex flex-col lg:flex-row">
         <TrainingsSidebar from={from} to={to} />
 
         <div className="flex-1 min-h-0 overflow-hidden p-6 flex justify-center">
