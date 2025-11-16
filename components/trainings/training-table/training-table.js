@@ -25,6 +25,7 @@ export default function TrainingTable({
   setDroppedRows,
   onDelete,
   loading = false,
+  isDesktop,
 }) {
   const { setNodeRef, isOver } = useDroppable({
     id: "training-dropzone",
@@ -95,11 +96,13 @@ export default function TrainingTable({
         >
           {rows.length === 0 && !loading ? (
             <div className="h-full w-full flex flex-col items-center justify-center p-6">
-              <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white/50">
-                <AddIcon />
-              </div>
+              {isDesktop && (
+                <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white/50">
+                  <AddIcon />
+                </div>
+              )}
               <div className="text-lg font-medium text-foreground mb-1">
-                Drag an exercise here
+                {isDesktop ? "Drag an exercise here" : "Add an exercise"}
               </div>
             </div>
           ) : (
