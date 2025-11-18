@@ -13,11 +13,16 @@ export default async function TrainingsPage({ searchParams: rawSearchParams }) {
 
   const user = await getCurrentUser();
 
-  const trainings = await getTrainingsByUserAndDateRange(
-    user.id,
-    formatDateToYMD(from),
-    formatDateToYMD(to),
-    status
+  const trainings =
+    (await getTrainingsByUserAndDateRange(
+      user.id,
+      formatDateToYMD(from),
+      formatDateToYMD(to),
+      status
+    )) ?? [];
+
+  const sortedTrainings = [...trainings].sort(
+    (a, b) => Date.parse(a.training_date) - Date.parse(b.training_date)
   );
 
   return (
@@ -27,12 +32,12 @@ export default async function TrainingsPage({ searchParams: rawSearchParams }) {
 
         <div className="flex-1 min-h-0 overflow-hidden p-6 flex justify-center">
           <div className="h-full overflow-y-auto w-full">
-            {trainings.length === 0 ? (
+            {sortedTrainings.length === 0 ? (
               <div className="h-full flex justify-center items-center">
                 <p>Lack of Trainings</p>
               </div>
             ) : (
-              <TrainingsList trainings={trainings} />
+              <TrainingsList trainings={sortedTrainings} />
             )}
           </div>
         </div>
