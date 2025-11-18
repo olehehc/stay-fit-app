@@ -258,7 +258,7 @@ export default function EditTrainingPage() {
   // The main content area (shared between desktop & mobile)
   const mainContent = (
     <main className="flex-1 pt-[160px] md:pt-[92px] p-6 bg-gray-50">
-      <div className="flex w-full gap-6">
+      <div className="flex max-w-[1920px] mx-auto justify-center items-center gap-6">
         {/* Desktop sidebar */}
         <ExercisesSidebar
           exercises={exercises}
