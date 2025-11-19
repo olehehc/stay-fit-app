@@ -1,4 +1,4 @@
-# Fit Meals App
+# StayFit App
 
 > A full‑stack Next.js app for tracking trainings and meals.
 
@@ -6,7 +6,7 @@
 
 ## Summary
 
-Fit Meals App is a small personal/portfolio project implemented with the Next.js `app/` router. It includes user authentication, a local SQLite database for data persistence, UI components (shadcn/ui + Radix + some MUI), meal/recipe management, and basic workout tracking. The project is aimed at demonstrating full‑stack skills: routing, server code, database access, authentication, and a polished UI.
+StayFit App is a personal/portfolio project implemented with the Next.js `app/` router. It includes user authentication, a local SQLite database for data persistence, UI components (shadcn/ui + Radix + some MUI), meal/recipe management, and workout tracking. The project is aimed at demonstrating full‑stack skills: routing, server code, database access, authentication, and a polished UI.
 
 ---
 
