@@ -75,18 +75,18 @@ Open http://localhost:3000 in your browser.
 
 ## Available scripts
 
-- `npm run dev` — run Next.js in development mode (Turbopack enabled)
-- `npm run build` — build for production
-- `npm run start` — start production server
-- `npm run lint` — run linter
+- `npm run dev` - run Next.js in development mode (Turbopack enabled)
+- `npm run build` - build for production
+- `npm run start` - start production server
+- `npm run lint` - run linter
 
 ---
 
 ## Environment variables (explanation)
 
-- `JWT_SECRET` — **required**. Secret string for signing JWT tokens. Keep this safe and never commit it.
-- `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` / `AWS_S3_BUCKET` — optional, used if you want image uploads to persist to S3. If not set, images may be stored/served differently depending on code paths.
-- `NEXT_PUBLIC_AWS_IMAGE_HOSTNAME` — optional public hostname for serving uploaded images.
+- `JWT_SECRET` - **required**. Secret string for signing JWT tokens. Keep this safe and never commit it.
+- `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` / `AWS_S3_BUCKET` - optional, used if you want image uploads to persist to S3. If not set, images may be stored/served differently depending on code paths.
+- `NEXT_PUBLIC_AWS_IMAGE_HOSTNAME` - optional public hostname for serving uploaded images.
 
 ---
 
